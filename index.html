@@ -1,1 +1,234 @@
-<h1>LVG New Portfolio</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonella Vacation Home</title>
+<style>
+/* ---------- GLOBAL ---------- */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Segoe UI',sans-serif}
+:root{--primary:#003366;--accent:#00aaff;--light:#f5f7fa;--dark:#001b33}
+a{color:inherit;text-decoration:none}
+/* ---------- NAV ---------- */
+nav{position:fixed;top:0;left:0;right:0;height:70px;background:var(--primary);display:flex;align-items:center;padding:0 2rem;z-index:1000}
+.logo{color:#fff;font-weight:700;font-size:1.4rem;margin-right:auto}
+.links{display:flex;gap:1.5rem}
+.links a{color:#fff;font-weight:600;transition:color .3s}
+.links a:hover{color:var(--accent)}
+/* ---------- SECTIONS ---------- */
+.sections{height:100vh;position:relative;overflow:hidden}
+section{position:absolute;top:70px;left:0;width:100%;height:calc(100vh - 70px);padding:3rem 2rem;overflow-y:auto;transform:translateX(100%);transition:transform .6s ease;background:var(--light)}
+section.active{transform:translateX(0)}
+h2{margin-bottom:1.5rem;color:var(--primary)}
+p{line-height:1.6;margin-bottom:1rem;max-width:700px}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:.8rem 1.5rem;border:none;border-radius:4px;font-weight:600;cursor:pointer;transition:background .3s,transform .3s}
+.btn:hover{background:var(--primary);transform:translateY(-3px)}
+.link{color:var(--accent);font-weight:600;cursor:pointer;transition:text-decoration .3s}
+.link:hover{text-decoration:underline}
+/* ---------- HOME ---------- */
+#home{display:flex;flex-direction:column;justify-content:center;text-align:center}
+#home h2{font-size:2.5rem}
+#home .buttons{margin-top:2rem;display:flex;justify-content:center;gap:1rem}
+/* ---------- LOCATION ---------- */
+#location .content{display:flex;flex-wrap:wrap;gap:2rem}
+#location .content p{flex:1 1 300px}
+.map{flex:1 1 300px;height:300px;border:2px solid var(--accent);border-radius:4px}
+iframe{width:100%;height:100%;border:0}
+/* ---------- FORM ---------- */
+form{max-width:600px;margin:auto;display:flex;flex-direction:column;gap:1rem}
+label{font-weight:600;margin-bottom:.25rem}
+input,select{padding:.75rem;border:1px solid #ccc;border-radius:4px}
+/* ---------- RULES ---------- */
+ul{max-width:700px;list-style:disc inside;margin-left:1rem}
+li{margin-bottom:.6rem}
+/* ---------- QUICK LINKS ---------- */
+.quick-links{display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0}
+nav .links a[data-section]{
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav>
+  <div class="logo">Leonella Vacation Home</div>
+  <div class="links">
+    <a data-section="home">Home</a>
+    <a data-section="about">About</a>
+    <a data-section="amenities">Amenities</a>
+    <a data-section="location">Location</a>
+    <a data-section="book">Book Now</a>
+    <a data-section="contact">Contact</a>
+    <!-- hidden link so Rules section is routable -->
+    <a data-section="rules" style="display:none"></a>
+  </div>
+</nav>
+
+<!-- ================= SECTIONS ================= -->
+<div class="sections">
+  <!-- HOME -->
+  <section id="home">
+    <h2>Welcome to Leonella Vacation Home</h2>
+    <p>Your perfect getaway in San Juan, Trinidad. Available year-round for short and long stays.</p>
+    <div class="buttons">
+      <a class="btn" data-section="book">Book Now</a>
+      <a class="btn" data-section="about">Learn More</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>
+      Leonella Vacation Home is a comfortable two-bedroom rental located in a quiet residential area of San Juan, Trinidad. It is just 26 minutes from Piarco International Airport, 15 minutes to Downtown Port of Spain, 35 minutes to Maracas Beach, and 3 minutes from the bustling Eastern Main Road and the Croisee, where groceries, bakeries, banks and transport are easily accessed.
+    </p>
+    <p>
+      <a class="link" data-section="rules">View our home rules</a>
+    </p>
+  </section>
+
+  <!-- AMENITIES -->
+  <section id="amenities">
+    <h2>Amenities</h2>
+    <ul>
+      <li>Two comfortable bedrooms (rent as 1 or 2)</li>
+      <li>Fully equipped kitchen</li>
+      <li>Air-conditioned rooms</li>
+      <li>Complimentary Wi-Fi</li>
+      <li>Designated parking</li>
+      <li>Secure gated premises</li>
+      <li>Water-tank backup</li>
+      <li>Fresh linens & towels</li>
+      <li>Outdoor seating area</li>
+    </ul>
+  </section>
+
+  <!-- LOCATION -->
+  <section id="location">
+    <h2>Location</h2>
+    <div class="content">
+      <p>
+        Leonella Vacation Home is situated at No. 7 Campo Street Extension, San Juan, Trinidad. The quiet neighborhood ensures restful nights while still being minutes away from the lively Croisee, where you’ll find groceries, bakeries, stores, banks and public transport. Major routes to Piarco International Airport, Downtown Port of Spain, and Maracas Beach are all within easy reach.
+      </p>
+      <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3216.4661771840197!2d-61.44545144006453!3d10.655131829448518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1754525720887!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK NOW -->
+  <section id="book">
+    <h2>Book Now</h2>
+    <form id="bookingForm" action="https://formspree.io/f/YOUR-ID-HERE" method="POST">
+      <label>Check-in Date</label>
+      <input type="date" name="Check-in" required>
+      <label>Check-out Date</label>
+      <input type="date" name="Check-out" required>
+      <label>Number of Guests</label>
+      <select name="Guests" required>
+        <option value="1">1</option><option value="2">2</option>
+        <option value="3">3</option><option value="4">4</option>
+      </select>
+      <label>Bedrooms</label>
+      <select name="Bedroom-option" required>
+        <option value="1">1 Bedroom</option>
+        <option value="2">2 Bedrooms</option>
+      </select>
+      <button type="submit" class="btn">Check Availability</button>
+    </form>
+    <p id="bookingReply" style="display:none;color:green;margin-top:1rem">Thank you! We’ll respond within 24 hours.</p>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-info">
+      <p><strong>Leonella Vacation Home</strong><br>
+      No. 7 Campo Street Extension, San Juan, Trinidad, West Indies</p>
+      <p>Phone: 347-377-7785 | 347-441-6399<br>
+      Cell: 868-361-3642</p>
+    </div>
+    <div class="quick-links">
+      <a class="btn" data-section="book">Check Availability</a>
+      <a class="btn" href="mailto:LeonellasVacationHome@gmail.com">Email Us</a>
+    </div>
+    <div class="calendar-container">
+      <div>
+        <label>Quick Check-in</label>
+        <input type="date">
+      </div>
+      <div>
+        <label>Quick Check-out</label>
+        <input type="date">
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section id="rules">
+    <h2>House Rules</h2>
+    <ul>
+      <li>Smoking is NOT ALLOWED inside. Guests may smoke outside.</li>
+      <li>Present your ID, Passport or Temporary Residence Card upon check-in.</li>
+      <li>Inform us the night before departure of your intended check-out time.</li>
+      <li>All waste must be placed in the provided garbage cans outside. Collection is daily early morning, Monday-Friday.</li>
+      <li>Switch off all electrical appliances before leaving the house.</li>
+      <li>Conserve water; supply automatically switches to the water tank during shortages.</li>
+      <li>Guests are responsible for any loss or damage caused by themselves or their companions.</li>
+      <li>Park vehicles only in the designated area.</li>
+      <li>Maximum occupancy is 4 persons. Extra charge of $25 USD per additional person.</li>
+      <li>Pets are not allowed inside or on the grounds.</li>
+      <li>Keep noise to a minimum to respect our neighbors.</li>
+      <li>Maintain a clean and sanitary environment.</li>
+      <li>Secure the gates when entering or leaving the premises.</li>
+    </ul>
+    <p>These rules ensure a safe and pleasant stay. Enjoy your vacation!</p>
+  </section>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+/* --- section switcher --- */
+const links = document.querySelectorAll('[data-section]');
+const sections = document.querySelectorAll('section');
+const home = document.getElementById('home');
+home.classList.add('active');
+
+links.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const targetId = link.getAttribute('data-section');
+    sections.forEach(sec => sec.classList.remove('active'));
+    document.getElementById(targetId).classList.add('active');
+  });
+});
+
+/* --- form validation --- */
+const form = document.getElementById('bookingForm');
+if (form) {
+  form.addEventListener('submit', e => {
+    const inDate = new Date(form['Check-in'].value);
+    const outDate = new Date(form['Check-out'].value);
+    const guests = parseInt(form.Guests.value);
+    const bedrooms = parseInt(form['Bedroom-option'].value);
+    let ok = true;
+
+    if (outDate <= inDate) { alert('Check-out must be after check-in'); ok=false; }
+    if (guests > (bedrooms === 1 ? 2 : 4)) { alert('Too many guests for selected bedroom option'); ok=false; }
+    if (outDate > new Date('2025-12-31')) { alert('Property only available until 31 Dec 2025'); ok=false; }
+
+    if (!ok) { e.preventDefault(); return; }
+
+    form.style.display='none';
+    document.getElementById('bookingReply').style.display='block';
+  });
+}
+
+/* --- set min date to today --- */
+const today = new Date().toISOString().split('T')[0];
+document.querySelectorAll('input[type="date"]').forEach(i => i.min = today);
+</script>
+</body>
+</html>
