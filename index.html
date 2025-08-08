@@ -133,7 +133,18 @@ nav .links a[data-section]{
   <section id="book">
     <!-- inside #book section -->
 <h2>Book Now</h2>
-    <form id="bookingForm" action="https://submit-form.com/l2UNIGh4m">
+  <form id="bookingForm" action="https://submit-form.com/l2UNIGh4m">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" placeholder="Name" required="" />
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" placeholder="Email" required="" />
+  <label for="message">Message</label>
+  <textarea
+    id="message"
+    name="message"
+    placeholder="Message"
+    required=""
+  ></textarea>
       <label>Check-in Date</label>
       <input type="date" name="Check-in" required>
       <label>Check-out Date</label>
