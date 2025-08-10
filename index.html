@@ -111,7 +111,10 @@ section{
   --nav-link-bg-hover:#254766; /* background AFTER hover (blue now) */
 /*  --nav-link-underline:#f7b731;/* underline AFTER hover (gold now) */
 }
-
+/* hide the text caret on focused links */
+.links a:focus {
+  outline: none;
+}
 /* normal state */
 .links a{
   color:var(--nav-link-normal);
@@ -125,6 +128,18 @@ section{
 
 /* underline on hover (delete these two rules if you never want the underline) */
 .links a::after{background-color:var(--nav-link-underline);}
+/* hide the text caret on focused links */
+.links a:focus {
+  outline: none;
+}
+/* kill caret on Safari / Chrome */
+.links a{
+  user-select: none;         /* no text selection */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  outline: none;             /* remove focus ring */
+}
 </style>
 </head>
 <body>
