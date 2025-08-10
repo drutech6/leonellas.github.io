@@ -183,6 +183,12 @@ section{
 }
 
 /* optional: if you still want a little bottom space, change 1rem above to 0 */
+#ownerKey{
+  background:#6B86BF;   /* blue background */
+  color:#6B86BF;           /* white text inside */
+/*  border:0px solid #6B86BF */
+/*  border-radius:0px; */
+}
 </style>
 </head>
 <body>
@@ -226,7 +232,7 @@ section{
 </section>
 
   <section id="book">
-    
+    <input id="ownerKey" type="password" placeholder="Owner key" style="position:absolute;right:1rem;top:1.2rem;z-index:999;width:25px;font-size:1.4rem">
     <div class="booking-container">
       <div id="calendar-container">
         <div class="calendar-header">
@@ -266,51 +272,66 @@ section{
 </div>
 
 <script>
-/* --- section switcher --- */
-const links = document.querySelectorAll('[data-section]');
-const sections = document.querySelectorAll('section');
-links.forEach(link=>{link.addEventListener('click', e=>{e.preventDefault();const targetId=link.getAttribute('data-section');sections.forEach(sec=>sec.classList.remove('active'));document.getElementById(targetId).classList.add('active')})});
+/* ---------- SECTION SWITCHER (keeps nav & buttons working) ---------- */
+document.querySelectorAll('[data-section]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const targetId = link.getAttribute('data-section');
+    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(targetId).classList.add('active');
+  });
+});
 
-/* --- CALENDAR GENERATOR --- */
-const monthYearDisplay = document.getElementById('month-year-display');
+/* ---------- CALENDAR PASSWORD LOCK ---------- */
+const OWNER_PASSWORD = 'leonella2024';   // change as needed
+const keyField = document.getElementById('ownerKey');
 const daysGrid = document.getElementById('calendar-days-grid');
-const prevMonthBtn = document.getElementById('prev-month-btn');
-const nextMonthBtn = document.getElementById('next-month-btn');
+
+if (daysGrid) {   // guard in case calendar isn’t on every page
+  daysGrid.addEventListener('click', e => {
+    if (!e.target.classList.contains('calendar-day')) return;
+    if (keyField && keyField.value === OWNER_PASSWORD) {
+      e.target.classList.toggle('unavailable-day');
+    }
+  });
+}
+
+/* ---------- CALENDAR GENERATOR (unchanged) ---------- */
+const monthYearDisplay = document.getElementById('month-year-display');
+const prevBtn = document.getElementById('prev-month-btn');
+const nextBtn = document.getElementById('next-month-btn');
 let currentDate = new Date();
 
 function generateCalendar(date) {
+  const daysGrid = document.getElementById('calendar-days-grid');
+  if (!daysGrid) return;
   daysGrid.innerHTML = '';
   const today = new Date();
-  const month = date.getMonth();
-  const year = date.getFullYear(); // CORRECTED
+  const m = date.getMonth(), y = date.getFullYear();
   monthYearDisplay.textContent = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-  const firstDayOfMonth = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    const emptyCell = document.createElement('div');
-    emptyCell.classList.add('empty-day');
-    daysGrid.appendChild(emptyCell);
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.classList.add('empty-day');
+    daysGrid.appendChild(empty);
   }
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dayCell = document.createElement('div');
-    dayCell.classList.add('calendar-day');
-    dayCell.textContent = day;
-    if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) { // CORRECTED
-      dayCell.classList.add('current-day');
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.classList.add('calendar-day');
+    cell.textContent = d;
+    if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear()) {
+      cell.classList.add('current-day');
     }
-    daysGrid.appendChild(dayCell);
+    daysGrid.appendChild(cell);
   }
 }
-prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); generateCalendar(currentDate); });
-nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); generateCalendar(currentDate); });
-generateCalendar(currentDate);
 
-// Add event listener for marking days
-daysGrid.addEventListener('click', function(e) {
-  if (e.target.classList.contains('calendar-day')) {
-    e.target.classList.toggle('unavailable-day');
-  }
-});
+if (prevBtn && nextBtn) {
+  prevBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); generateCalendar(currentDate); });
+  nextBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); generateCalendar(currentDate); });
+  generateCalendar(currentDate);
+}
 </script>
 </body>
 </html>
