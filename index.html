@@ -90,7 +90,7 @@ section{
 /* ---------- BOOKING SECTION & CALENDAR ---------- */
 #book h2 {text-align:center;width:100%;flex-shrink:0}
 .booking-container{display:flex;align-items:stretch;flex-wrap:wrap;gap:2rem;margin-top:1.5rem;flex-grow:1}
-#calendar-container{flex:1;max-width:400px;min-width:320px;background-color:#fff;color:#333;padding:1rem;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);align-self:flex-start}
+#calendar-container{flex:1;max-width:300px;min-width:120px;background-color:#fff;color:#333;padding:1rem;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);align-self:flex-start}
 .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
 .calendar-header h3{margin:0;font-size:1.2rem;color:var(--primary)}
 .calendar-header button{background:none;border:none;font-size:1.5rem;font-weight:bold;cursor:pointer;color:var(--accent);padding:0 0.5rem}
@@ -140,6 +140,49 @@ section{
   -ms-user-select: none;     /* IE/Edge */
   outline: none;             /* remove focus ring */
 }
+/* 1. Shrink & lift the main heading */
+#book h2 {
+  font-size: 1.8rem;      /* smaller text */
+  margin: 0 0 0.5rem;     /* tighter top/bottom space */
+}
+
+/* 2. Make the flex wrapper taller */
+.booking-container {
+  align-items: flex-end;  /* push both boxes down */
+  flex-grow: 11;           /* use all remaining height */
+  min-height: 70vh;       /* optional, gives breathing room */
+}
+
+/* 3. Calendar: taller & lower */
+#calendar-container {
+  height: 590px;          /* taller box */
+  align-self: flex-end;   /* sit flush with bottom */
+}
+
+/* 4. Google form: taller & lower */
+.form-container {
+  height: 605px;          /* same height as calendar */
+  align-self: flex-end;
+}
+.form-container iframe {
+  height: 100%;           /* fill the new container height */
+}
+/* remove the section’s built-in padding for Book only */
+#book{
+  padding: 50px 0 0 0;      /* 70px = header height, no bottom padding */
+  height:calc(100vh - 30px);
+  display:flex;
+  flex-direction:column;
+}
+
+/* let the flex container grab the remaining space */
+.booking-container{
+  flex:1 1 auto;            /* stretch to fill */
+  margin:0;                 /* kill any leftover margin */
+  padding:0 2rem 1rem;      /* optional side breathing room */
+}
+
+/* optional: if you still want a little bottom space, change 1rem above to 0 */
 </style>
 </head>
 <body>
@@ -183,7 +226,7 @@ section{
 </section>
 
   <section id="book">
-    <h2>Book Your Stay</h2>
+    
     <div class="booking-container">
       <div id="calendar-container">
         <div class="calendar-header">
