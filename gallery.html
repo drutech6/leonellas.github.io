@@ -20,6 +20,26 @@
     box-shadow:0 2px 6px rgba(0,0,0,.2);
     cursor:pointer;
   }
+  
+  /* ---------- NEW: Sticky Home Link for Main Page ---------- */
+  #mainBackHome {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: #fff;
+    padding: .5rem 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    color: #333;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    z-index: 100; /* Above page content, below lightbox */
+  }
+  #mainBackHome:hover {
+    text-decoration: underline;
+  }
+
 
   /* ---------- lightbox ---------- */
   #overlay{
@@ -62,7 +82,7 @@
   #prev{left:-3rem;}
   #next{right:-3rem;}
 
-  /* back-home link */
+  /* back-home link (for lightbox) */
   #backHome{
     position:absolute;
     bottom:1rem;
@@ -75,6 +95,8 @@
 </head>
 <body>
 
+<a id="mainBackHome" href="index.html">← Back to Home</a>
+
 <h1>Gallery</h1>
 
 <img class="thumb" src="https://drutech6.github.io/Images/293.jpg" alt="Image 293">
@@ -84,7 +106,6 @@
 <img class="thumb" src="https://drutech6.github.io/Images/293.jpg" alt="Image 293">
 <img class="thumb" src="https://drutech6.github.io/Images/723.jpg" alt="Image 723">
 
-<!-- Lightbox -->
 <div id="overlay">
   <div id="lightbox">
     <img id="lbImg" src="" alt="">
