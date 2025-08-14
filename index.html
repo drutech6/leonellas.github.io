@@ -1,340 +1,851 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YE6HK5EWC2"></script>
+
   window.dataLayer = window.dataLayer || [];
+
   function gtag(){dataLayer.push(arguments);}
+
   gtag('js', new Date());
 
+
   gtag('config', 'G-YE6HK5EWC2');
+
 </script>
+
 
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Leonella's Vacation Home</title>
+
 <style>
+
 /* ---------- GLOBAL ---------- */
+
 *{margin:0;padding:0;box-sizing:border-box}
+
 html,body{height:100%;overflow:hidden;font-family:'Segoe UI',sans-serif}
+
 :root{--primary:#08050F;--accent:#00aaff;--light:#f5f7fa;--dark:#001b33}
+
 :root{
+
   --primary:#243B52;   /* deep blue */
+
   --secondary:#f7b731; /* gold accent */
+
   --transition:all .4s ease;
-}
-a{color:inherit;text-decoration:none}
-/* ---------- NAV ---------- */
-nav{position:fixed;top:0;left:0;right:0;height:70px;background:var(--primary);display:flex;align-items:center;padding:0 2rem;z-index:1000}
-.logo{color:#fff;font-weight:700;font-size:1.4rem;margin-right:auto}
-.links{display:flex;gap:1.5rem}
-.links a{
-  position:relative;
-  color:#fff;
-  font-weight:600;
-  padding:0.5rem 1rem;
-  border-radius:30px;
-  transition:var(--transition);
+
 }
 
-.links a:hover{
-/*    background-color:var(--primary);*/
+a{color:inherit;text-decoration:none}
+
+/* ---------- NAV ---------- */
+
+nav{position:fixed;top:0;left:0;right:0;height:70px;background:var(--primary);display:flex;align-items:center;padding:0 2rem;z-index:1000}
+
+.logo{color:#fff;font-weight:700;font-size:1.4rem;margin-right:auto}
+
+.links{display:flex;gap:1.5rem}
+
+.links a{
+
+  position:relative;
+
   color:#fff;
-  transform:translateY(-3px);
-  box-shadow:0 5px 15px rgba(0,0,0,.2);
+
+  font-weight:600;
+
+  padding:0.5rem 1rem;
+
+  border-radius:30px;
+
+  transition:var(--transition);
+
 }
+
+
+.links a:hover{
+
+/*    background-color:var(--primary);*/
+
+  color:#fff;
+
+  transform:translateY(-3px);
+
+  box-shadow:0 5px 15px rgba(0,0,0,.2);
+
+}
+
 
 /*.links a::after{*/
+
   content:'';
+
   position:absolute;
+
   bottom:-5px;
+
   left:0;
+
   width:0;
+
   height:2px;
+
 /*  background-color:var(--secondary);*/
+
   transition:var(--transition);
+
 }
+
 
 .links a:hover::after{
+
   width:100%;
+
 }
+
 /* ---------- SECTIONS ---------- */
+
 section{position:absolute;top:70px;left:0;width:100%;height:calc(100vh - 70px);padding:3rem 2rem;overflow-y:auto;transform:translateX(100%);transition:transform .6s ease;background:var(--light);display:flex;flex-direction:column}
+
 section.active{transform:translateX(0)}
+
 h2{margin-bottom:1.5rem;color:var(--primary)}
+
 p{line-height:1.6;margin-bottom:1rem;max-width:700px}
+
 /* ---------- HOME ---------- */
+
 #home{display:flex;flex-direction:column;justify-content:center;text-align:center}
+
 #home h2{font-size:2.5rem}
+
 #home p {margin-left:auto;margin-right:auto}
+
 #home .buttons{margin-top:2rem;display:flex;justify-content:center;gap:1rem}
+
 /* ---------- SECTIONS (General) ---------- */
+
 .sections section {background:linear-gradient(to bottom, #537AB5, #86778C);color:#fff;font-size:1.1rem}
+
 h2 {color: #fff;}
+
 /* 1. Make the wrapper hold the gradient and fill the screen */
+
 .sections{
+
   position:relative;
+
   height:100vh;
+
   overflow:hidden;
+
   background:linear-gradient(to bottom, #537AB5, #86778C);
+
 }
+
 
 /* 2. Let every section start at the very top and push its content down */
+
 section{
+
   top:0;                       /* no gap */
+
   padding-top:90px;            /* 70 (header) + 20 breathing room */
+
 }
+
 /* ---------- BUTTONS ---------- */
-.btn{background-color:#726780;color:#fff;padding:0.4rem 1.3rem;border:none;border-radius:4px;font-weight:600;cursor:pointer;transition:background-color 0.3s, transform 0.3s}
+
+.btn{
+
+    background-color:#726780;
+
+    color:#fff;
+
+    padding:0.4rem 1.3rem;
+
+    border:none;
+
+    border-radius:0px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:background-color 0.3s, transform 0.3s;
+
+    text-decoration: none !important; /* Add !important here */
+
+}
+
 .btn:hover{background-color:#445A87;transform:translateY(-3px)}
+
 /* ---------- BOOKING SECTION & CALENDAR ---------- */
-#book h2 {text-align:center;width:100%;flex-shrink:0}
-.booking-container{display:flex;align-items:stretch;flex-wrap:wrap;gap:2rem;margin-top:1.5rem;flex-grow:1}
-#calendar-container{flex:1;max-width:300px;min-width:120px;background-color:#fff;color:#333;padding:1rem;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);align-self:flex-start}
+
+#book h2 {text-align:center;width:100%;flex-shrink:10}
+
+.booking-container{display:right;align-items:stretch;flex-wrap:wrap;gap:2rem;margin-top:2rem;flex-grow:1}
+
+#calendar-container{flex:1;max-width:300px;min-width:120px;background-color:#black;color:#333;padding:1rem;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.1);align-self:flex-start}
+
 .calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+
 .calendar-header h3{margin:0;font-size:1.2rem;color:var(--primary)}
+
 .calendar-header button{background:none;border:none;font-size:1.5rem;font-weight:bold;cursor:pointer;color:var(--accent);padding:0 0.5rem}
+
 .calendar-weekdays,#calendar-days-grid{display:grid;grid-template-columns:repeat(7, 1fr);text-align:center;gap:5px}
+
 .calendar-weekdays div{font-weight:600;font-size:0.9rem;color:var(--dark);padding-bottom:0.5rem}
+
 #calendar-days-grid div{padding:0.5rem 0;border-radius:4px;transition:background-color 0.2s}
+
 .calendar-day{cursor:pointer}
+
 .calendar-day:hover{background-color:#e0f7ff}
+
 .empty-day{visibility:hidden}
+
 .current-day{border:2px solid #00aaff;font-weight:bold;background-color:#e0f7ff}
+
 .unavailable-day{background-color:#ffdddd !important;color:#d9534f !important;text-decoration:line-through;cursor:not-allowed}
+
 .form-container{flex:2.5;min-width:300px;display:flex}
+
 .form-container iframe{width:100%;height:100%;border:0}
+
 /* ========== HEADER LINK COLORS ========== */
+
 :root{
+
   --nav-link-normal:#ffffff;   /* BEFORE hover (white now) */
+
   --nav-link-hover:#BF2A2A;    /* text color AFTER hover (white now) */
+
   --nav-link-bg-hover:#254766; /* background AFTER hover (blue now) */
+
 /*  --nav-link-underline:#f7b731;/* underline AFTER hover (gold now) */
+
 }
+
 /* hide the text caret on focused links */
+
 .links a:focus {
+
   outline: none;
+
 }
+
 /* normal state */
+
 .links a{
+
   color:var(--nav-link-normal);
+
 }
+
 
 /* hover state */
+
 .links a:hover{
+
   background-color:var(--nav-link-bg-hover);
+
   color:var(--nav-link-hover);
+
 }
+
 
 /* underline on hover (delete these two rules if you never want the underline) */
-.links a::after{background-color:var(--nav-link-underline);}
+
+/*.links a::after{background-color:var(--nav-link-underline);}*/
+
 /* hide the text caret on focused links */
+
 .links a:focus {
+
   outline: none;
+
 }
+
 /* kill caret on Safari / Chrome */
+
 .links a{
+
   user-select: none;         /* no text selection */
+
   -webkit-user-select: none; /* Safari */
+
   -moz-user-select: none;    /* Firefox */
+
   -ms-user-select: none;     /* IE/Edge */
+
   outline: none;             /* remove focus ring */
+
 }
+
 /* 1. Shrink & lift the main heading */
+
 #book h2 {
+
   font-size: 1.8rem;      /* smaller text */
+
   margin: 0 0 0.5rem;     /* tighter top/bottom space */
+
 }
+
 
 /* 2. Make the flex wrapper taller */
+
 .booking-container {
+
   align-items: flex-end;  /* push both boxes down */
+
   flex-grow: 11;           /* use all remaining height */
+
   min-height: 70vh;       /* optional, gives breathing room */
+
 }
+
 
 /* 3. Calendar: taller & lower */
+
 #calendar-container {
+
   height: 590px;          /* taller box */
+
   align-self: flex-end;   /* sit flush with bottom */
+
 }
+
 
 /* 4. Google form: taller & lower */
+
 .form-container {
+
   height: 605px;          /* same height as calendar */
+
   align-self: flex-end;
+
 }
+
 .form-container iframe {
+
   height: 100%;           /* fill the new container height */
+
 }
+
 /* remove the section’s built-in padding for Book only */
+
 #book{
+
   padding: 50px 0 0 0;      /* 70px = header height, no bottom padding */
+
   height:calc(100vh - 30px);
+
   display:flex;
+
   flex-direction:column;
+
 }
+
+
+
 
 /* let the flex container grab the remaining space */
+
 .booking-container{
+
   flex:1 1 auto;            /* stretch to fill */
+
   margin:0;                 /* kill any leftover margin */
+
   padding:0 2rem 1rem;      /* optional side breathing room */
+
 }
+
 
 /* optional: if you still want a little bottom space, change 1rem above to 0 */
+
 #ownerKey{
+
   background:#6B86BF;   /* blue background */
+
   color:#6B86BF;           /* white text inside */
+
 /*  border:0px solid #6B86BF */
+
 /*  border-radius:0px; */
+
 }
+
+/* ==== BOOKING LAYOUT FIXES ==== */
+
+
+/* 1. Pull the whole calendar strip up to the H2 line */
+
+#book {
+
+  display: flex;
+
+  flex-direction: column;   /* keep heading on its own line */
+
+  padding: 0 2rem;          /* remove extra top padding */
+
+}
+
+
+#book h2 {
+
+  order: 0;
+
+  margin: 1rem 0 0.5rem;
+
+}
+
+
+/* 2. Calendar row: tight height, side-by-side */
+
+.booking-container {
+
+  order: 1;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  margin: 0;
+
+  padding-top: 0;           /* flush under the heading */
+
+}
+
+
+/* 3. Shrink each date box to 50 % of its previous width */
+
+.calendar-wrapper {
+
+  max-width: 110px;         /* 50 % of 300px */
+
+  flex: 0 0 auto;
+
+}
+
+
+.calendar-wrapper input {
+
+  width: 100%;
+
+  font-size: 0.9rem;
+
+}
+
+
+/* 4. Google-form box: grab remaining width, full height */
+
+.form-wrapper {
+
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  height: 100%;
+
+margin-bottom: 0;   /* ← NEW: kills any bottom gap */
+
+}
+
+
+/* 5. Hide the Google-Forms header image (banner) */
+
+.form-wrapper iframe {
+
+  width: 100%;
+
+  height: 135%;
+
+  border: none;
+
+  /* clip the top ~90 px banner */
+
+  margin-top: -150px;
+
+}
+
+
 </style>
+
 </head>
+
 <body>
 
+
 <nav>
+
   <div class="logo">Leonella's Vacation Home</div>
+
   <div class="links">
+
     <a data-section="home">Home</a><a data-section="about">About</a><a data-section="amenities">Amenities</a><a data-section="location">Location</a><a data-section="book">Book Now</a><a data-section="contact">Contact</a><a data-section="rules" style="display:none"></a>
+
   </div>
+
 </nav>
 
+
 <div class="sections">
+
   <section id="home" class="active">
+
     <h2>Welcome to Leonella's Vacation Home</h2>
+
     <p>Experience the perfect blend of comfort and convenience in our beautifully designed</p>
+
     <p>vacation home, located in the heart of San Juan, Trinidad </p>
+
     <div class="buttons"><a class="btn" data-section="book">Book Now</a><a class="btn" data-section="about">Learn More</a></div>
+
   </section>
+
 
   <section id="about">
+
     <h2>About Us</h2>
+
     <p>Leonella's Vacation Home is a comfortable two-bedroom rental located in a quiet residential area of San Juan, Trinidad. It is just 26 minutes from Piarco International Airport, 15 minutes to Downtown Port of Spain, 35 minutes to Maracas Beach, and 3 minutes from the bustling Eastern Main Road and the Croisee, where groceries, bakeries, banks and transport are easily accessed.</p>
+
     <p><a class="btn" data-section="rules">View our home rules</a></p>
+
     <p><a href="gallery.html" class="btn">View Gallery</a></p>
+
 </section>
+
   
+
   <section id="amenities">
+
     <h2>Amenities</h2>
+
     <ul><li>Two comfortable bedrooms (rent as 1 or 2)</li><li>Fully equipped kitchen</li><li>Air-conditioned rooms</li><li>Complimentary Wi-Fi</li><li>Designated parking</li><li>Secure gated premises</li><li>Water-tank backup</li><li>Fresh linens & towels</li><li>Outdoor seating area</li></ul>
+
   </section>
+
 <!-- LOCATION -->
+
 <section id="location">
+
   <h2>Location</h2>
+
   <div class="content" style="display: flex; justify-content: space-between; align-items: flex-start;">
+
     <p style="flex-basis: 45%; margin-right: 20px;">
+
       Leonella's Vacation Home is situated at No. 7 Campo Street Extension, San Juan, Trinidad. The quiet neighborhood ensures restful nights while still being minutes away from the lively Croisee, where you’ll find groceries, bakeries, stores, banks and public transport. Major routes to Piarco International Airport, Downtown Port of Spain, and Maracas Beach are all within easy reach.
+
     </p>
+
     <div class="map" style="flex-basis: 55%;">
+
       <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3216.4661771840197!2d-61.44545144006453!3d10.655131829448518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1754525720887!5m2!1sen!2sus" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
     </div>
+
   </div>
+
 </section>
+
 
   <section id="book">
-    <input id="ownerKey" type="password" placeholder="Owner key" style="position:absolute;right:1rem;top:1.2rem;z-index:999;width:25px;font-size:1.4rem">
-    <div class="booking-container">
-      <div id="calendar-container">
-        <div class="calendar-header">
-          <button id="prev-month-btn">&lt;</button>
-          <h3 id="month-year-display"></h3>
-          <button id="next-month-btn">&gt;</button>
-        </div>
-        <div class="calendar-weekdays">
-          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-        </div>
-        <div id="calendar-days-grid"></div>
-      </div>
-      <div class="form-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?embedded=true">Loading…</iframe>
-        <p id="bookingReply" style="display:none;color:green;margin-top:1rem">Thank you! We’ll respond within 24 hours.</p>
-      </div>
+
+  <h2>Book Your Stay</h2>
+
+
+  <div class="booking-container">
+
+    <!-- 1.  Pick-up calendar -->
+
+    <div class="calendar-wrapper">
+
+      <h3>Check-in</h3>
+
+      <input id="checkin"  placeholder="Select date…">
+
     </div>
-  </section>
+
+
+    <!-- 2.  Drop-off calendar -->
+
+    <div class="calendar-wrapper">
+
+      <h3>Check-out</h3>
+
+      <input id="checkout" placeholder="Select date…">
+
+    </div>
+
+
+    <!-- 3.  Google form (auto-filled) -->
+
+    <div class="form-wrapper">
+
+      <iframe id="bookingForm"
+
+              src="https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?embedded=true"
+
+              width="100%" height="100%" frameborder="0"></iframe>
+
+    </div>
+
+  </div>
+
+
+  <!-- Flatpickr assets -->
+
+  <link  rel="stylesheet"
+
+         href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+  <!-- Activation script -->
+
+  <script>
+
+    const FORM_URL   = "https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?usp=pp_url";
+
+    const ENTRY_IN   = "entry.120129823";   // Check-in field in your form
+
+    const ENTRY_OUT  = "entry.78700285";    // Check-out field
+
+
+    let checkIn  = "";
+
+    let checkOut = "";
+
+
+    function updateForm() {
+
+      if (checkIn && checkOut) {
+
+        const url = `${FORM_URL}&${ENTRY_IN}=${checkIn}&${ENTRY_OUT}=${checkOut}`;
+
+        document.getElementById("bookingForm").src = url;
+
+      }
+
+    }
+
+
+    flatpickr("#checkin",  {
+
+      dateFormat: "Y-m-d",
+
+      minDate: "today",
+
+      onChange: (sel) => { checkIn = sel[0] ? sel[0].toISOString().slice(0,10) : ""; updateForm(); }
+
+    });
+
+
+    flatpickr("#checkout", {
+
+      dateFormat: "Y-m-d",
+
+      minDate: "today",
+
+      onChange: (sel) => { checkOut = sel[0] ? sel[0].toISOString().slice(0,10) : ""; updateForm(); }
+
+    });
+
+  </script>
+
+</section>
+
   
+
   <section id="contact">
+
     <h2>Contact</h2>
+
     <div class="contact-info">
+
       <p><strong>Leonella's Vacation Home</strong><br>No. 7 Campo Street Extension, San Juan, Trinidad, West Indies</p>
+
       <p>Phone: 347-377-7785 | 347-441-6399<br>Cell: 868-361-3642</p>
+
     </div>
+
     <div class="quick-links">
+
       <a class="btn" data-section="book">Check Availability</a>
+
       <a class="btn" href="mailto:LeonellasVacationHome@gmail.com">Email Us</a>
+
     </div>
-  </section>
+
+<div class="calendar-container">
+
+      <div>
+
+        <label>Quick Check-in</label>
+
+        <input type="date">
+
+      </div>
+
+      <div>
+
+        <label>Quick Check-out</label>
+
+        <input type="date">
+
+      </div>  
+
+</section>
+
 
   <section id="rules">
+
     <h2>House Rules</h2>
+
     <ul><li>Smoking is NOT ALLOWED inside. Guests may smoke outside.</li><li>Present your ID, Passport or Temporary Residence Card upon check-in.</li><li>Inform us the night before departure of your intended check-out time.</li><li>All waste must be placed in the provided garbage cans outside. Collection is daily early morning, Monday-Friday.</li><li>Switch off all electrical appliances before leaving the house.</li><li>Conserve water; supply automatically switches to the water tank during shortages.</li><li>Guests are responsible for any loss or damage caused by themselves or their companions.</li><li>Park vehicles only in the designated area.</li><li>Maximum occupancy is 4 persons. Extra charge of $25 USD per additional person.</li><li>Pets are not allowed inside or on the grounds.</li><li>Keep noise to a minimum to respect our neighbors.</li><li>Maintain a clean and sanitary environment.</li><li>Secure the gates when entering or leaving the premises.</li></ul>
+
     <p>These rules are written to ensure that your time here is safe and trouble free.
 
+
     We wish you a pleasant and enjoyable vacation! You are always welcome!</p>
+
   </section>
+
 </div>
 
+
 <script>
+
 /* ---------- SECTION SWITCHER (keeps nav & buttons working) ---------- */
+
 document.querySelectorAll('[data-section]').forEach(link => {
+
   link.addEventListener('click', e => {
+
     e.preventDefault();
+
     const targetId = link.getAttribute('data-section');
+
     document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+
     document.getElementById(targetId).classList.add('active');
+
   });
+
 });
 
+
 /* ---------- CALENDAR PASSWORD LOCK ---------- */
+
 const OWNER_PASSWORD = 'leonella2024';   // change as needed
+
 const keyField = document.getElementById('ownerKey');
+
 const daysGrid = document.getElementById('calendar-days-grid');
 
+
 if (daysGrid) {   // guard in case calendar isn’t on every page
+
   daysGrid.addEventListener('click', e => {
+
     if (!e.target.classList.contains('calendar-day')) return;
+
     if (keyField && keyField.value === OWNER_PASSWORD) {
+
       e.target.classList.toggle('unavailable-day');
+
     }
+
   });
+
 }
+
 
 /* ---------- CALENDAR GENERATOR (unchanged) ---------- */
+
 const monthYearDisplay = document.getElementById('month-year-display');
+
 const prevBtn = document.getElementById('prev-month-btn');
+
 const nextBtn = document.getElementById('next-month-btn');
+
 let currentDate = new Date();
 
+
 function generateCalendar(date) {
+
   const daysGrid = document.getElementById('calendar-days-grid');
+
   if (!daysGrid) return;
+
   daysGrid.innerHTML = '';
+
   const today = new Date();
+
   const m = date.getMonth(), y = date.getFullYear();
+
   monthYearDisplay.textContent = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
   const firstDay = new Date(y, m, 1).getDay();
+
   const daysInMonth = new Date(y, m + 1, 0).getDate();
+
   for (let i = 0; i < firstDay; i++) {
+
     const empty = document.createElement('div');
+
     empty.classList.add('empty-day');
+
     daysGrid.appendChild(empty);
+
   }
+
   for (let d = 1; d <= daysInMonth; d++) {
+
     const cell = document.createElement('div');
+
     cell.classList.add('calendar-day');
+
     cell.textContent = d;
+
     if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear()) {
+
       cell.classList.add('current-day');
+
     }
+
     daysGrid.appendChild(cell);
+
   }
+
 }
 
+
 if (prevBtn && nextBtn) {
+
   prevBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); generateCalendar(currentDate); });
+
   nextBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); generateCalendar(currentDate); });
+
   generateCalendar(currentDate);
+
 }
+
 </script>
+
 </body>
-</html>
+
+</html> 
