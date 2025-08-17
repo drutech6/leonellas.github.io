@@ -7,11 +7,14 @@
     <style>
         /* --- General & Typography --- */
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --light-gray: #f4f7f6;
-            --dark-gray: #333;
-            --text-color: #555;
+            /* NEW: A sophisticated and rich dark theme palette */
+            --primary-color: #D4A05D;   /* Luxurious Gold for accents */
+            --text-color: #E0E0E0;      /* Soft White for body text */
+            --heading-color: #FFFFFF;   /* Bright White for headings */
+            --bg-darkest: #121820;    /* Near-black charcoal */
+            --bg-medium-dark: #1B2D3F;  /* Deep Navy */
+            --bg-light-dark: #313D4A;   /* Muted Slate Blue */
+            --border-color: #4A5562;
         }
         html {
             scroll-behavior: smooth;
@@ -20,7 +23,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #ffffff;
+            background-color: var(--bg-darkest); /* Base background color */
             color: var(--text-color);
             line-height: 1.7;
         }
@@ -30,28 +33,55 @@
             padding: 40px 20px;
         }
         h1, h2, h3 {
-            color: var(--secondary-color);
+            color: var(--heading-color);
+            font-weight: 600;
         }
         h2 {
             text-align: center;
             font-size: 2.2em;
-            margin-bottom: 50px; /* Increased space below heading */
+            margin-bottom: 50px;
         }
         section {
-            padding: 100px 0; /* Increased vertical padding between sections */
+            padding: 100px 0;
+            border-bottom: 1px solid var(--border-color); /* Separates sections */
         }
-        section:nth-of-type(odd) {
-            background-color: var(--light-gray);
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* --- Individual Section Backgrounds --- */
+        #home { background-color: var(--bg-darkest); }
+        #about { background-color: var(--bg-light-dark); }
+        #amenities { background-color: var(--bg-medium-dark); }
+        #book-now { background-color: var(--bg-light-dark); }
+        #contact { background-color: var(--bg-darkest); }
+
+        /* --- Buttons & Links --- */
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--bg-darkest); /* Dark text on gold button for contrast */
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            background-color: #e6b87a; /* Lighter gold for hover */
+            transform: translateY(-2px);
         }
 
         /* --- Navigation Bar --- */
         .navbar {
-            background-color: #fff;
+            background-color: var(--bg-darkest);
             padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,17 +89,8 @@
         .nav-logo {
             font-size: 1.5em;
             font-weight: bold;
-            color: var(--secondary-color);
+            color: var(--heading-color);
             text-decoration: none;
-        }
-        .nav-links {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        .nav-links li {
-            margin-left: 25px;
         }
         .nav-links a {
             text-decoration: none;
@@ -80,137 +101,79 @@
         .nav-links a:hover, .nav-links a.active {
             color: var(--primary-color);
         }
-        .menu-toggle {
-            display: none;
-            font-size: 24px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
 
-        /* --- Hero/Home Section --- */
-        #home {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('https://raw.githubusercontent.com/drutech6/drutech6.github.io/main/Images/293.jpg') no-repeat center center/cover;
-    color: white;
-    text-align: center;
-    padding: 290px 20px;
-}
-        #home h1 {
-            color: white;
-            font-size: 3em;
-            margin: 0;
-        }
-        #home p {
-            font-size: 1.2em;
-        }
-
-        /* --- Amenities Section --- */
-        .amenities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            list-style: none;
-            padding: 0;
-        }
+        /* --- Amenities & Booking Form Styling --- */
         .amenities-grid li {
-            background: #fff;
+            background: #2a3440; /* Darker than section bg */
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
         }
-
-        /* --- Booking Form Styling --- */
         #bookingForm {
-            background-color: #ffffff;
+            background-color: var(--bg-medium-dark);
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
         label {
-            margin-bottom: 1px;
+            margin-bottom: 5px;
             font-weight: bold;
             color: var(--text-color);
         }
         input[type="text"] {
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-light-dark);
+            color: var(--text-color);
             border-radius: 5px;
             font-size: 1em;
             cursor: pointer;
         }
+        input[type="text"]::placeholder {
+            color: #9ab;
+        }
         .submit-btn {
             grid-column: 1 / -1;
-            padding:  9px 9px; /* top, right, bottom, left */
+            padding: 15px;
             background-color: var(--primary-color);
-            color: white;
+            color: var(--bg-darkest); /* Dark text on gold button */
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
         }
         .submit-btn:hover {
-            background-color: #2980b9;
+            background-color: #e6b87a;
         }
 
-        /* --- Contact Section --- */
-        #contact p {
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        /* --- Responsive Design --- */
+        /* --- Unchanged & Responsive Styles (for brevity) --- */
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; }
+        .nav-links li { margin-left: 25px; }
+        .menu-toggle { display: none; font-size: 24px; background: none; border: none; cursor: pointer; color: var(--heading-color); }
+        .amenities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; list-style: none; padding: 0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        #home, #contact { text-align: center; }
+        #home p { max-width: 600px; margin: 0 auto 20px auto; }
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                background-color: #fff;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .nav-links li {
-                margin: 15px 0;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            .submit-btn {
-                grid-column: 1;
-            }
-            #home h1 {
-                font-size: 2.5em;
-            }
+            .nav-links { display: none; flex-direction: column; width: 100%; text-align: center; position: absolute; top: 70px; left: 0; background-color: var(--bg-darkest); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+            .nav-links.active { display: flex; }
+            .nav-links li { margin: 15px 0; }
+            .menu-toggle { display: block; }
+            .form-grid { grid-template-columns: 1fr; }
+            .submit-btn { grid-column: 1; }
+            #home { padding: 120px 20px; }
         }
-
-        /* Pikaday Calendar Styling */
-        .pika-single {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
+        .pika-single { border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--bg-light-dark); }
+        .pika-button { color: var(--primary-color) !important; font-weight: bold !important; background-color: transparent !important;}
+        .is-selected .pika-button { background: var(--primary-color) !important; color: var(--bg-darkest) !important; box-shadow: none !important; }
+        .pika-title { color: var(--text-color) !important; }
+        .pika-label { color: var(--text-color) !important; }
+        .is-disabled .pika-button { color: #555 !important; }
     </style>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
     <script src="https://cdn.jsdelivr.net/npm/moment/moment.js"></script>
@@ -231,9 +194,11 @@
     </nav>
 
     <section id="home">
-        <h2>Welcome to Leonella's Vacation Home</h2>
-        <p>Your perfect escape in a beautiful, quiet residential area.</p>
-    <p><a href="gallery.html" class="btn">View Gallery</a></p>
+        <div class="container">
+            <h2>Welcome to Leonella's Vacation Home</h2>
+            <p>Your perfect escape in a beautiful, quiet residential area.</p>
+            <p><a href="gallery.html" class="btn">View Gallery</a></p>
+        </div>
     </section>
 
     <main>
@@ -241,7 +206,7 @@
             <div class="container">
                 <h2>About The Property</h2>
                 <p>Nestled in a peaceful and friendly neighborhood, our vacation home offers the perfect blend of comfort and convenience. This charming house is ideal for families, couples, or anyone looking to relax and unwind away from the hustle and bustle. It is just 26 minutes from Piarco International Airport, 15 minutes to Downtown Port of Spain, 35 minutes to Maracas Beach, and 3 minutes from the bustling Eastern Main Road and the Croisee, where groceries, bakeries, banks and transport are easily accessed.</p>
-    <p><a href="gallery.html" class="btn">View Gallery</a></p>
+                <p style="text-align: center;"><a href="gallery.html" class="btn">View Gallery</a></p>
             </div>
         </section>
 
@@ -279,7 +244,7 @@
                         <button type="button" class="submit-btn" id="requestBookBtn">Request to Book</button>
                     </div>
                 </form>
-                <p id="form-submitted-msg" style="text-align:center; display:none; margin-top: 20px; color: green; font-weight: bold;">
+                <p id="form-submitted-msg" style="text-align:center; display:none; margin-top: 20px; color: #4CAF50; font-weight: bold;">
                     Thank you! Your request has been submitted. We'll be in touch soon.
                 </p>
             </div>
@@ -347,5 +312,4 @@
     </script>
 
 </body>
-
 </html>
