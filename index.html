@@ -151,13 +151,18 @@
         }
 
         .amenities-grid li {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(6px);
+            padding: 28px 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .amenities-grid li:hover {
+            transform: translateY(-5px);
         }
 
         #bookingForm {
