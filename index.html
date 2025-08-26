@@ -804,6 +804,28 @@
         </div>
         <button id="nextBtn" class="modal-nav">&#10095;</button>
     </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // fetch unavailable dates
+    fetch("availability.json")
+      .then(response => response.json())
+      .then(data => {
+        let unavailableDates = data.unavailable;
+
+        // initialize Flatpickr with disabled dates
+        flatpickr("#checkin", {
+          dateFormat: "Y-m-d",
+          disable: unavailableDates
+        });
+
+        flatpickr("#checkout", {
+          dateFormat: "Y-m-d",
+          disable: unavailableDates
+        });
+      })
+      .catch(error => console.error("Error loading availability:", error));
+  });
+</script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
