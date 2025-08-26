@@ -824,9 +824,22 @@
         let checkoutCurrentDate = new Date();
         checkoutCurrentDate.setMonth(checkoutCurrentDate.getMonth() + 1);
 
-        const unavailableDates = [
-            
-        ];
+        let unavailableDates = []; // initially empty
+
+        // Fetch unavailable dates from availability.json
+        fetch("availability.json")
+              .then(response => response.json())
+              .then(data => {
+        if (data && Array.isArray(data.unavailable)) {
+              unavailableDates = data.unavailable;
+        }
+        updateAllCalendars(); // build calendars after loading data
+  })
+        .catch(err => {
+              console.error("Failed to load availability.json:", err);
+        updateAllCalendars(); // fallback to empty
+  });
+
 
         function toYYYYMMDD(date) {
             const year = date.getFullYear();
@@ -971,7 +984,7 @@
         });
 
         // --- Initial Render ---
-        updateAllCalendars();
+        
     });
         // --- Image Gallery Modal Functionality ---
         const modal = document.getElementById('imageModal');
