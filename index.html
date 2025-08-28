@@ -1100,58 +1100,44 @@ function updateStatusBar() {
     
     </script>
 <script>
-  let ratesData = null;
-
-  // Load rates.json once
+  // Load Rates & Policies dynamically from JSON
   fetch('rates.json')
     .then(response => response.json())
     .then(data => {
-      ratesData = data;
+      const container = document.getElementById('rates-container');
+
+      container.innerHTML = `
+        <h3>Rental Rates</h3>
+        <ul>
+          <li><strong>Base Rate:</strong> $${data.rentalRates.baseRate} per night (up to 2 guests)</li>
+          <li><strong>Extra Guests:</strong> $${data.rentalRates.extraGuest} per person, per night</li>
+          <li><strong>Weekly Discount:</strong> ${data.rentalRates.weeklyDiscount}</li>
+          <li><strong>Monthly Discount:</strong> ${data.rentalRates.monthlyDiscount}</li>
+        </ul>
+
+        <h3>Payment Policy</h3>
+        <ul>
+          <li><strong>Deposit:</strong> ${data.paymentPolicy.deposit}</li>
+          <li><strong>Balance:</strong> ${data.paymentPolicy.balance}</li>
+          <li><strong>Accepted Payments:</strong> ${data.paymentPolicy.acceptedPayments}</li>
+        </ul>
+
+        <h3>Additional Fees</h3>
+        <ul>
+          <li><strong>Cleaning Fee:</strong> $${data.additionalFees.cleaningFee} per stay</li>
+          <li><strong>Security Deposit:</strong> $${data.additionalFees.securityDeposit} (refundable within 7 days)</li>
+        </ul>
+
+        <h3>Cancellation Policy</h3>
+        <ul>
+          ${data.cancellationPolicy.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      `;
     })
-    .catch(error => console.error('Error loading rates.json:', error));
-
-  // Function to calculate duration and cost
-  function updateBookingSummary(checkinDate, checkoutDate, guestCount = 2) {
-    if (!checkinDate || !checkoutDate || !ratesData) return;
-
-    const checkin = new Date(checkinDate);
-    const checkout = new Date(checkoutDate);
-    const duration = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
-
-    if (duration <= 0) return;
-
-    // Base rate calculation
-    let baseCost = duration * ratesData.rentalRates.baseRate;
-
-    // Extra guest cost (if more than 2)
-    let extraCost = 0;
-    if (guestCount > 2) {
-      extraCost = (guestCount - 2) * ratesData.rentalRates.extraGuest * duration;
-    }
-
-    // Cleaning fee (flat, once per stay)
-    let cleaningFee = ratesData.additionalFees.cleaningFee;
-
-    // Apply discounts
-    let discount = 0;
-    if (duration >= 28) {
-      discount = baseCost * 0.20; // 20% monthly
-    } else if (duration >= 7) {
-      discount = baseCost * 0.10; // 10% weekly
-    }
-
-    let totalCost = baseCost + extraCost + cleaningFee - discount;
-
-    // Update DOM
-    document.getElementById("duration").textContent = `Duration: ${duration} Nights`;
-    document.getElementById("checkin-display").textContent = `Check-in: ${checkin.toDateString()}`;
-    document.getElementById("checkout-display").textContent = `Check-out: ${checkout.toDateString()}`;
-    document.getElementById("total-display").textContent = `Estimated Total: $${totalCost.toFixed(2)} (incl. cleaning fee)`;
-  }
-
-  // Example hook — replace with your actual calendar selection logic
-  // Assume you already have `selectedCheckin` and `selectedCheckout` when dates are picked:
-  // updateBookingSummary(selectedCheckin, selectedCheckout, 3); // example with 3 guests
+    .catch(error => {
+      console.error('Error loading rates.json:', error);
+      document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
+    });
 </script>
 
 
