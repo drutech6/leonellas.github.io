@@ -1,0 +1,22 @@
+{
+  "rentalRates": {
+    "baseRate": 150,
+    "extraGuest": 25,
+    "weeklyDiscount": "10% off stays 7 nights or longer",
+    "monthlyDiscount": "20% off stays 28 nights or longer"
+  },
+  "paymentPolicy": {
+    "deposit": "25% due at booking",
+    "balance": "Due 7 days before check-in",
+    "acceptedPayments": "Credit Card, PayPal, Bank Transfer"
+  },
+  "additionalFees": {
+    "cleaningFee": 75,
+    "securityDeposit": 200
+  },
+  "cancellationPolicy": [
+    "Free cancellation up to 14 days before check-in",
+    "50% refund if canceled within 7 days",
+    "No refund for cancellations less than 7 days before check-in"
+  ]
+}
