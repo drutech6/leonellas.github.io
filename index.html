@@ -818,6 +818,20 @@
                 <span id="trip-duration"></span><br> <!-- NEW LINE to count nights-->
   <p id="total-display"></p> <!-- Add this line -->
                   <div class="date-display">Check-in:<span id="checkin-date">Not selected</span> | Check-out:<span id="checkout-date">Not selected</span></div>
+
+                    </div>
+
+                    <div class="controls">
+                        <button class="calendar-btn btn-clear" id="clear-dates">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                        <button class="calendar-btn btn-book" id="book-now-btn">
+                            <i class="fas fa-check"></i> Request to Book
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 <script>
   let ratesData = null;
 
@@ -872,20 +886,6 @@
   // Assume you already have `selectedCheckin` and `selectedCheckout` when dates are picked:
   // updateBookingSummary(selectedCheckin, selectedCheckout, 3); // example with 3 guests
 </script>
-
-                    </div>
-
-                    <div class="controls">
-                        <button class="calendar-btn btn-clear" id="clear-dates">
-                            <i class="fas fa-times"></i> Clear
-                        </button>
-                        <button class="calendar-btn btn-book" id="book-now-btn">
-                            <i class="fas fa-check"></i> Request to Book
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <section id="contact">
             <div class="container" style="text-align: center;">
