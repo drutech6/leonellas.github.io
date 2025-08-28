@@ -1097,5 +1097,46 @@ function updateStatusBar() {
         });
     
     </script>
+<script>
+  // Load Rates & Policies dynamically from JSON
+  fetch('rates.json')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('rates-container');
+
+      container.innerHTML = `
+        <h3>Rental Rates</h3>
+        <ul>
+          <li><strong>Base Rate:</strong> $${data.rentalRates.baseRate} per night (up to 2 guests)</li>
+          <li><strong>Extra Guests:</strong> $${data.rentalRates.extraGuest} per person, per night</li>
+          <li><strong>Weekly Discount:</strong> ${data.rentalRates.weeklyDiscount}</li>
+          <li><strong>Monthly Discount:</strong> ${data.rentalRates.monthlyDiscount}</li>
+        </ul>
+
+        <h3>Payment Policy</h3>
+        <ul>
+          <li><strong>Deposit:</strong> ${data.paymentPolicy.deposit}</li>
+          <li><strong>Balance:</strong> ${data.paymentPolicy.balance}</li>
+          <li><strong>Accepted Payments:</strong> ${data.paymentPolicy.acceptedPayments}</li>
+        </ul>
+
+        <h3>Additional Fees</h3>
+        <ul>
+          <li><strong>Cleaning Fee:</strong> $${data.additionalFees.cleaningFee} per stay</li>
+          <li><strong>Security Deposit:</strong> $${data.additionalFees.securityDeposit} (refundable within 7 days)</li>
+        </ul>
+
+        <h3>Cancellation Policy</h3>
+        <ul>
+          ${data.cancellationPolicy.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      `;
+    })
+    .catch(error => {
+      console.error('Error loading rates.json:', error);
+      document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
+    });
+</script>
+
 </body>
 </html>
