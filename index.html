@@ -622,6 +622,41 @@
                 right: 20px;
                 font-size: 30px;
             }
+#rates {
+  background: #f8f9fa; /* light professional background */
+  padding: 40px 20px;
+}
+
+#rates h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+#rates h3 {
+  margin-top: 20px;
+  color: #333;
+}
+
+#rates ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+}
+
+#rates ul li {
+  margin-bottom: 8px;
+  padding-left: 1em;
+  position: relative;
+}
+
+#rates ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #666;
+}
+
         }
 
     </style>
@@ -633,6 +668,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#amenities">Amenities</a></li>
+            <li><a href="#rates">Rates & Policies</a></li>
             <li><a href="#book-now">Book Now</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -678,7 +714,41 @@
                 </ul>
             </div>
         </section>
-        <section id="house-rules">
+
+        <section id="rates" class="section">
+  <h2>Rates & Policies</h2>
+  <div class="rates-container">
+    <h3>Rental Rates</h3>
+    <ul>
+      <li><strong>Base Rate:</strong> $150 per night (up to 2 guests)</li>
+      <li><strong>Extra Guests:</strong> $25 per person, per night</li>
+      <li><strong>Weekly Discount:</strong> 10% off stays 7 nights or longer</li>
+      <li><strong>Monthly Discount:</strong> 20% off stays 28 nights or longer</li>
+    </ul>
+
+    <h3>Payment Policy</h3>
+    <ul>
+      <li><strong>Deposit:</strong> 25% due at booking</li>
+      <li><strong>Balance:</strong> Due 7 days before check-in</li>
+      <li><strong>Accepted Payments:</strong> Credit Card, PayPal, Bank Transfer</li>
+    </ul>
+
+    <h3>Additional Fees</h3>
+    <ul>
+      <li><strong>Cleaning Fee:</strong> $75 per stay</li>
+      <li><strong>Security Deposit:</strong> $200 (refundable within 7 days)</li>
+    </ul>
+
+    <h3>Cancellation Policy</h3>
+    <ul>
+      <li>Free cancellation up to 14 days before check-in</li>
+      <li>50% refund if canceled within 7 days</li>
+      <li>No refund for cancellations less than 7 days before check-in</li>
+    </ul>
+  </div>
+</section>
+
+                <section id="house-rules">
             <div class="container">
                 <h2>House Rules</h2>
                 <ul class="rules-list">
