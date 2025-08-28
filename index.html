@@ -832,60 +832,6 @@
                 </div>
             </div>
         </section>
-<script>
-  let ratesData = null;
-
-  // Load rates.json once
-  fetch('rates.json')
-    .then(response => response.json())
-    .then(data => {
-      ratesData = data;
-    })
-    .catch(error => console.error('Error loading rates.json:', error));
-
-  // Function to calculate duration and cost
-  function updateBookingSummary(checkinDate, checkoutDate, guestCount = 2) {
-    if (!checkinDate || !checkoutDate || !ratesData) return;
-
-    const checkin = new Date(checkinDate);
-    const checkout = new Date(checkoutDate);
-    const duration = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
-
-    if (duration <= 0) return;
-
-    // Base rate calculation
-    let baseCost = duration * ratesData.rentalRates.baseRate;
-
-    // Extra guest cost (if more than 2)
-    let extraCost = 0;
-    if (guestCount > 2) {
-      extraCost = (guestCount - 2) * ratesData.rentalRates.extraGuest * duration;
-    }
-
-    // Cleaning fee (flat, once per stay)
-    let cleaningFee = ratesData.additionalFees.cleaningFee;
-
-    // Apply discounts
-    let discount = 0;
-    if (duration >= 28) {
-      discount = baseCost * 0.20; // 20% monthly
-    } else if (duration >= 7) {
-      discount = baseCost * 0.10; // 10% weekly
-    }
-
-    let totalCost = baseCost + extraCost + cleaningFee - discount;
-
-    // Update DOM
-    document.getElementById("duration").textContent = `Duration: ${duration} Nights`;
-    document.getElementById("checkin-display").textContent = `Check-in: ${checkin.toDateString()}`;
-    document.getElementById("checkout-display").textContent = `Check-out: ${checkout.toDateString()}`;
-    document.getElementById("total-display").textContent = `Estimated Total: $${totalCost.toFixed(2)} (incl. cleaning fee)`;
-  }
-
-  // Example hook — replace with your actual calendar selection logic
-  // Assume you already have `selectedCheckin` and `selectedCheckout` when dates are picked:
-  // updateBookingSummary(selectedCheckin, selectedCheckout, 3); // example with 3 guests
-</script>
 
         <section id="contact">
             <div class="container" style="text-align: center;">
@@ -1192,6 +1138,60 @@ function updateStatusBar() {
       console.error('Error loading rates.json:', error);
       document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
     });
+</script>
+<script>
+  let ratesData = null;
+
+  // Load rates.json once
+  fetch('rates.json')
+    .then(response => response.json())
+    .then(data => {
+      ratesData = data;
+    })
+    .catch(error => console.error('Error loading rates.json:', error));
+
+  // Function to calculate duration and cost
+  function updateBookingSummary(checkinDate, checkoutDate, guestCount = 2) {
+    if (!checkinDate || !checkoutDate || !ratesData) return;
+
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+    const duration = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+
+    if (duration <= 0) return;
+
+    // Base rate calculation
+    let baseCost = duration * ratesData.rentalRates.baseRate;
+
+    // Extra guest cost (if more than 2)
+    let extraCost = 0;
+    if (guestCount > 2) {
+      extraCost = (guestCount - 2) * ratesData.rentalRates.extraGuest * duration;
+    }
+
+    // Cleaning fee (flat, once per stay)
+    let cleaningFee = ratesData.additionalFees.cleaningFee;
+
+    // Apply discounts
+    let discount = 0;
+    if (duration >= 28) {
+      discount = baseCost * 0.20; // 20% monthly
+    } else if (duration >= 7) {
+      discount = baseCost * 0.10; // 10% weekly
+    }
+
+    let totalCost = baseCost + extraCost + cleaningFee - discount;
+
+    // Update DOM
+    document.getElementById("duration").textContent = `Duration: ${duration} Nights`;
+    document.getElementById("checkin-display").textContent = `Check-in: ${checkin.toDateString()}`;
+    document.getElementById("checkout-display").textContent = `Check-out: ${checkout.toDateString()}`;
+    document.getElementById("total-display").textContent = `Estimated Total: $${totalCost.toFixed(2)} (incl. cleaning fee)`;
+  }
+
+  // Example hook — replace with your actual calendar selection logic
+  // Assume you already have `selectedCheckin` and `selectedCheckout` when dates are picked:
+  // updateBookingSummary(selectedCheckin, selectedCheckout, 3); // example with 3 guests
 </script>
 
 </body>
