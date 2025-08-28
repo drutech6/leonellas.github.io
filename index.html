@@ -1104,84 +1104,46 @@ function updateStatusBar() {
     
     </script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  let selectedCheckin = null;
-  let selectedCheckout = null;
-  let ratesData = null;
-
-  // Fetch once, then reuse
-  fetch("rates.json")
-    .then(res => res.json())
+  // Load Rates & Policies dynamically from JSON
+  fetch('rates.json')
+    .then(response => response.json())
     .then(data => {
-      ratesData = data;
-      renderRatesAndPolicies(data);   // update the "Rates & Policies" section
-      enableBookingCalculator(data);  // wire up booking system
+      const container = document.getElementById('rates-container');
+
+      container.innerHTML = `
+        <h3>Rental Rates</h3>
+        <ul>
+          <li><strong>Base Rate:</strong> $${data.rentalRates.baseRate} per night (up to 2 guests)</li>
+          <li><strong>Extra Guests:</strong> $${data.rentalRates.extraGuest} per person, per night</li>
+          <li><strong>Weekly Discount:</strong> ${data.rentalRates.weeklyDiscount}</li>
+          <li><strong>Monthly Discount:</strong> ${data.rentalRates.monthlyDiscount}</li>
+        </ul>
+
+        <h3>Payment Policy</h3>
+        <ul>
+          <li><strong>Deposit:</strong> ${data.paymentPolicy.deposit}</li>
+          <li><strong>Balance:</strong> ${data.paymentPolicy.balance}</li>
+          <li><strong>Accepted Payments:</strong> ${data.paymentPolicy.acceptedPayments}</li>
+        </ul>
+
+        <h3>Additional Fees</h3>
+        <ul>
+          <li><strong>Cleaning Fee:</strong> $${data.additionalFees.cleaningFee} per stay</li>
+          <li><strong>Security Deposit:</strong> $${data.additionalFees.securityDeposit} (refundable within 7 days)</li>
+        </ul>
+
+        <h3>Cancellation Policy</h3>
+        <ul>
+          ${data.cancellationPolicy.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+      `;
     })
-    .catch(err => console.error("Error loading rates.json:", err));
-
-  // --- 1. Rates & Policies Renderer ---
-  function renderRatesAndPolicies(data) {
-    const ratesEl = document.getElementById("rates-policies");
-    if (!ratesEl) return;
-
-    ratesEl.innerHTML = `
-      <h3>Rates & Policies</h3>
-      <ul>
-        <li>Base Rate: $${data.baseRate}/night (up to ${data.baseGuests} guests)</li>
-        <li>Extra Guest Fee: $${data.extraGuestFee}/night per person</li>
-        <li>Cleaning Fee: $${data.cleaningFee}</li>
-      </ul>
-    `;
-  }
-
-  // --- 2. Booking Calculator ---
-  function enableBookingCalculator(data) {
-    function updateBookingInfo() {
-      if (!selectedCheckin || !selectedCheckout) return;
-
-      const diffTime = selectedCheckout - selectedCheckin;
-      const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      if (nights <= 0) return;
-
-      let total = nights * data.baseRate;
-
-      const guests = parseInt(document.getElementById("guests")?.value || "1", 10);
-      if (guests > data.baseGuests) {
-        total += nights * (guests - data.baseGuests) * data.extraGuestFee;
-      }
-
-      total += data.cleaningFee;
-
-      document.getElementById("duration-display").textContent =
-        `Duration: ${nights} Night${nights > 1 ? "s" : ""}`;
-      document.getElementById("total-display").textContent =
-        `Estimated Total: $${total.toFixed(2)}`;
-    }
-
-    // Hook into datepickers
-    $(function() {
-      $("#checkin").datepicker({
-        dateFormat: "mm/dd/yy",
-        onSelect: function(dateText) {
-          selectedCheckin = new Date(dateText);
-          updateBookingInfo();
-        }
-      });
-
-      $("#checkout").datepicker({
-        dateFormat: "mm/dd/yy",
-        onSelect: function(dateText) {
-          selectedCheckout = new Date(dateText);
-          updateBookingInfo();
-        }
-      });
+    .catch(error => {
+      console.error('Error loading rates.json:', error);
+      document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
     });
-
-    // Guests input
-    document.getElementById("guests")?.addEventListener("change", updateBookingInfo);
-  }
-});
 </script>
+
 
 </body>
 </html>
