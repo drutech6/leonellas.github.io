@@ -771,7 +771,8 @@
 
                     <div class="status-bar">
                         <div><b>Your Selection:</b></div>
-                        <div class="date-display">Check-in:<span id="checkin-date">Not selected</span> | Check-out:<span id="checkout-date">Not selected</span></div>
+                <span id="trip-duration"></span><br> <!-- NEW LINE to count nights-->
+                      <div class="date-display">Check-in:<span id="checkin-date">Not selected</span> | Check-out:<span id="checkout-date">Not selected</span></div>
                     </div>
 
                     <div class="controls">
@@ -927,14 +928,24 @@
             updateStatusBar();
         }
 
-        function updateStatusBar() {
-            const checkinDisplay = document.getElementById('checkin-date');
-            const checkoutDisplay = document.getElementById('checkout-date');
-            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+function updateStatusBar() {
+    const checkinDisplay = document.getElementById('checkin-date');
+    const checkoutDisplay = document.getElementById('checkout-date');
+    const durationDisplay = document.getElementById('trip-duration'); // NEW
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
 
-            checkinDisplay.textContent = checkinDate ? checkinDate.toLocaleDateString('en-US', options) : 'Not selected';
-            checkoutDisplay.textContent = checkoutDate ? checkoutDate.toLocaleDateString('en-US', options) : 'Not selected';
-        }
+    checkinDisplay.textContent = checkinDate ? checkinDate.toLocaleDateString('en-US', options) : 'Not selected';
+    checkoutDisplay.textContent = checkoutDate ? checkoutDate.toLocaleDateString('en-US', options) : 'Not selected';
+
+    if (checkinDate && checkoutDate) {
+        const diffTime = checkoutDate - checkinDate;
+        const nights = diffTime / (1000 * 60 * 60 * 24);
+        durationDisplay.textContent = `Duration: ${nights} Night${nights > 1 ? 's' : ''}`;
+    } else {
+        durationDisplay.textContent = '';
+    }
+}
+
         
         // --- Event Listeners Setup ---
         document.getElementById('checkin-days').addEventListener('click', handleDateClick);
