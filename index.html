@@ -56,7 +56,7 @@
         }
 
         section {
-            padding: 50px 0 400px; /* Extra margin to prevent overlap */
+            padding: 50px 0 400px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 40px; /* Extra margin to prevent overlap */    
     }
@@ -682,6 +682,7 @@
                 <p>Your perfect escape in a beautiful, quiet residential area. Enjoy comfort, privacy, and convenience just minutes from essential amenities and major routes.</p>
                 <a href="#about" class="btn">Learn More</a>
                 <a href="#book-now" class="btn" style="margin-left: 15px;">Check Availability</a>
+
             </div>
         </section>
         <section id="about">
@@ -714,15 +715,7 @@
                 </ul>
             </div>
         </section>
-
-<section id="rates" class="section">
-  <h2>Rates & Policies</h2>
-  <div id="rates-container">
-    <!-- JSON content will load here -->
-  </div>
-</section>
-
-                <section id="house-rules">
+        <section id="house-rules">
             <div class="container">
                 <h2>House Rules</h2>
                 <ul class="rules-list">
@@ -769,6 +762,40 @@
                 </div>
             </div>
         </section>
+
+<section id="rates" class="section">
+  <h2>Rates & Policies</h2>
+  <div class="rates-container">
+    <h3>Rental Rates</h3>
+    <ul>
+      <li><strong>Base Rate:</strong> $150 per night (up to 2 guests)</li>
+      <li><strong>Extra Guests:</strong> $25 per person, per night</li>
+      <li><strong>Weekly Discount:</strong> 10% off stays 7 nights or longer</li>
+      <li><strong>Monthly Discount:</strong> 20% off stays 28 nights or longer</li>
+    </ul>
+
+    <h3>Payment Policy</h3>
+    <ul>
+      <li><strong>Deposit:</strong> 25% due at booking</li>
+      <li><strong>Balance:</strong> Due 7 days before check-in</li>
+      <li><strong>Accepted Payments:</strong> Credit Card, PayPal, Bank Transfer</li>
+    </ul>
+
+    <h3>Additional Fees</h3>
+    <ul>
+      <li><strong>Cleaning Fee:</strong> $75 per stay</li>
+      <li><strong>Security Deposit:</strong> $200 (refundable within 7 days)</li>
+    </ul>
+
+    <h3>Cancellation Policy</h3>
+    <ul>
+      <li>Free cancellation up to 14 days before check-in</li>
+      <li>50% refund if canceled within 7 days</li>
+      <li>No refund for cancellations less than 7 days before check-in</li>
+    </ul>
+  </div>
+</section>
+
         <section id="book-now">
             <div class="container">
 
@@ -819,6 +846,7 @@
   
              <div class="date-display">Check-in:<span id="checkin-date">Not selected</span> | Check-out:<span      id="checkout-date">Not selected</span></div>
                     </div>
+
                     <div class="controls">
                         <button class="calendar-btn btn-clear" id="clear-dates">
                             <i class="fas fa-times"></i> Clear
@@ -1097,47 +1125,5 @@ function updateStatusBar() {
         });
     
     </script>
-<script>
-  // Load Rates & Policies dynamically from JSON
-  fetch('rates.json')
-    .then(response => response.json())
-    .then(data => {
-      const container = document.getElementById('rates-container');
-
-      container.innerHTML = `
-        <h3>Rental Rates</h3>
-        <ul>
-          <li><strong>Base Rate:</strong> $${data.rentalRates.baseRate} per night (up to 2 guests)</li>
-          <li><strong>Extra Guests:</strong> $${data.rentalRates.extraGuest} per person, per night</li>
-          <li><strong>Weekly Discount:</strong> ${data.rentalRates.weeklyDiscount}</li>
-          <li><strong>Monthly Discount:</strong> ${data.rentalRates.monthlyDiscount}</li>
-        </ul>
-
-        <h3>Payment Policy</h3>
-        <ul>
-          <li><strong>Deposit:</strong> ${data.paymentPolicy.deposit}</li>
-          <li><strong>Balance:</strong> ${data.paymentPolicy.balance}</li>
-          <li><strong>Accepted Payments:</strong> ${data.paymentPolicy.acceptedPayments}</li>
-        </ul>
-
-        <h3>Additional Fees</h3>
-        <ul>
-          <li><strong>Cleaning Fee:</strong> $${data.additionalFees.cleaningFee} per stay</li>
-          <li><strong>Security Deposit:</strong> $${data.additionalFees.securityDeposit} (refundable within 7 days)</li>
-        </ul>
-
-        <h3>Cancellation Policy</h3>
-        <ul>
-          ${data.cancellationPolicy.map(item => `<li>${item}</li>`).join('')}
-        </ul>
-      `;
-    })
-    .catch(error => {
-      console.error('Error loading rates.json:', error);
-      document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
-    });
-</script>
-
-
 </body>
 </html>
