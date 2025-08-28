@@ -816,7 +816,11 @@
                     <div class="status-bar">
                         <div><b>Your Selection:</b></div>
                 <span id="trip-duration"></span><br> <!-- NEW LINE to count nights-->
-                <span id="total-display"></span><br> <!-- NEW LINE to count cost balance-->
+     <span id="duration-display"></span><br>
+<span id="total-display"></span><br>
+<label>Guests: <input type="number" id="guests" value="1" min="1"></label>
+
+                <strong>Total:</strong> $<span id="total-display">0</span> <!-- NEW LINE to count cost balance-->
                   <div class="date-display">Check-in:<span id="checkin-date">Not selected</span> | Check-out:<span id="checkout-date">Not selected</span></div>
 
                     </div>
@@ -1139,60 +1143,135 @@ function updateStatusBar() {
       document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
     });
 </script>
-
 <script>
-  let ratesData = null;
+let ratesData = null;
 
-  // Load rates.json once
-  fetch('rates.json')
-    .then(response => response.json())
+// Load the rates.json once
+fetch('rates.json')
+  .then(response => response.json())
+  .then(data => {
+    ratesData = data;
+  })
+  .catch(err => console.error('Error loading rates.json:', err));
+
+// Variables set by your calendar when dates are picked
+let checkinDate = null;
+let checkoutDate = null;
+let guests = 2; // example, can tie to a <select> later
+
+function updateBookingInfo() {
+  const checkinDisplay = document.getElementById('checkin-date');
+  const checkoutDisplay = document.getElementById('checkout-date');
+  const durationDisplay = document.getElementById('trip-duration');
+  const totalDisplay = document.getElementById('total-display');
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+
+  checkinDisplay.textContent = checkinDate ? checkinDate.toLocaleDateString('en-US', options) : 'Not selected';
+  checkoutDisplay.textContent = checkoutDate ? checkoutDate.toLocaleDateString('en-US', options) : 'Not selected';
+
+  if (checkinDate && checkoutDate) {
+    const diffTime = checkoutDate - checkinDate;
+    const nights = diffTime / (1000 * 60 * 60 * 24);
+    durationDisplay.textContent = `Duration: ${nights} Night${nights > 1 ? 's' : ''}`;
+
+    if (ratesData) {
+      // --- calculation ---
+      let total = ratesData.baseRate * nights + ratesData.cleaningFee;
+      if (guests > ratesData.includedGuests) {
+        total += (guests - ratesData.includedGuests) * ratesData.extraGuestFee * nights;
+      }
+      totalDisplay.textContent = total.toFixed(2);
+    }
+  } else {
+    durationDisplay.textContent = '';
+    totalDisplay.textContent = '0';
+  }
+}
+
+// Example hook for your calendar
+// Call this inside your onSelect handlers:
+function onCheckinSelected(date) {
+  checkinDate = date;
+  updateBookingInfo();
+}
+function onCheckoutSelected(date) {
+  checkoutDate = date;
+  updateBookingInfo();
+}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  let ratesData = null;
+  let selectedCheckin = null;
+  let selectedCheckout = null;
+
+  // Fetch rental rates from JSON
+  fetch("rates.json")
+    .then(res => res.json())
     .then(data => {
       ratesData = data;
     })
-    .catch(error => console.error('Error loading rates.json:', error));
+    .catch(err => {
+      console.error("Error loading rates.json:", err);
+    });
 
-  // Function to calculate duration and cost
-  function updateBookingSummary(checkinDate, checkoutDate, guestCount = 2) {
-    if (!checkinDate || !checkoutDate || !ratesData) return;
+  // Update booking info display
+  function updateBookingInfo() {
+    if (!selectedCheckin || !selectedCheckout || !ratesData) return;
 
-    const checkin = new Date(checkinDate);
-    const checkout = new Date(checkoutDate);
-    const duration = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+    // Calculate duration
+    const diffTime = selectedCheckout - selectedCheckin;
+    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (nights <= 0) return;
 
-    if (duration <= 0) return;
+    // Calculate base cost
+    let total = nights * ratesData.baseRate;
 
-    // Base rate calculation
-    let baseCost = duration * ratesData.rentalRates.baseRate;
-
-    // Extra guest cost (if more than 2)
-    let extraCost = 0;
-    if (guestCount > 2) {
-      extraCost = (guestCount - 2) * ratesData.rentalRates.extraGuest * duration;
+    // Extra guests
+    const guests = parseInt(document.getElementById("guests")?.value || "1", 10);
+    if (guests > ratesData.baseGuests) {
+      total += nights * (guests - ratesData.baseGuests) * ratesData.extraGuestFee;
     }
 
-    // Cleaning fee (flat, once per stay)
-    let cleaningFee = ratesData.additionalFees.cleaningFee;
-
-    // Apply discounts
-    let discount = 0;
-    if (duration >= 28) {
-      discount = baseCost * 0.20; // 20% monthly
-    } else if (duration >= 7) {
-      discount = baseCost * 0.10; // 10% weekly
-    }
-
-    let totalCost = baseCost + extraCost + cleaningFee - discount;
+    // Cleaning fee
+    total += ratesData.cleaningFee;
 
     // Update DOM
-    document.getElementById("duration").textContent = `Duration: ${duration} Nights`;
-    document.getElementById("checkin-display").textContent = `Check-in: ${checkin.toDateString()}`;
-    document.getElementById("checkout-display").textContent = `Check-out: ${checkout.toDateString()}`;
-    document.getElementById("total-display").textContent = `Estimated Total: $${totalCost.toFixed(2)} (incl. cleaning fee)`;
+    document.getElementById("duration-display").textContent = `Duration: ${nights} Night${nights > 1 ? "s" : ""}`;
+    document.getElementById("total-display").textContent = `Estimated Total: $${total.toFixed(2)}`;
   }
 
-  // Example hook — replace with your actual calendar selection logic
-  // Assume you already have `selectedCheckin` and `selectedCheckout` when dates are picked:
-  // updateBookingSummary(selectedCheckin, selectedCheckout, 3); // example with 3 guests
+  // Calendar selection hooks
+  function onCheckinSelected(date) {
+    selectedCheckin = date;
+    updateBookingInfo();
+  }
+
+  function onCheckoutSelected(date) {
+    selectedCheckout = date;
+    updateBookingInfo();
+  }
+
+  // Initialize jQuery UI Datepickers
+  $(function() {
+    $("#checkin").datepicker({
+      dateFormat: "mm/dd/yy",
+      onSelect: function(dateText) {
+        onCheckinSelected(new Date(dateText));
+      }
+    });
+
+    $("#checkout").datepicker({
+      dateFormat: "mm/dd/yy",
+      onSelect: function(dateText) {
+        onCheckoutSelected(new Date(dateText));
+      }
+    });
+  });
+
+  // Also recalc if guest count changes
+  document.getElementById("guests")?.addEventListener("change", updateBookingInfo);
+});
 </script>
 
 </body>
