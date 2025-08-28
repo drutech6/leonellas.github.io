@@ -1099,7 +1099,7 @@ function updateStatusBar() {
     </script>
 <script>
   // Load Rates & Policies dynamically from JSON
-  fetch('costs.json')
+  fetch('rates.json')
     .then(response => response.json())
     .then(data => {
       const container = document.getElementById('rates-container');
@@ -1133,7 +1133,7 @@ function updateStatusBar() {
       `;
     })
     .catch(error => {
-      console.error('Error loading costs.json:', error);
+      console.error('Error loading rates.json:', error);
       document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
     });
 </script>
