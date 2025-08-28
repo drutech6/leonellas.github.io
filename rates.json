@@ -1,8 +1,9 @@
 {
   "rentalRates": {
     "baseRate": 150,
-    "baseGuests": 2,
+    "baseGuests": 4,
     "extraGuestFee": 25,
+    "cleaningFee": 100
     "weeklyDiscount": "10% off stays 7 nights or longer",
     "monthlyDiscount": "20% off stays 28 nights or longer"
   },
