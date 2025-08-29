@@ -1133,8 +1133,8 @@ function updateStatusBar() {
       `;
     })
     .catch(error => {
-      console.error('Error loading rates.json:', error);
-      document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable locally.</p>";
+      console.error('Error loading rate.json:', error);
+      document.getElementById('rate-container').innerHTML = "<p>Rates & Policies information unavailable locally.</p>";
     });
 </script>
     
