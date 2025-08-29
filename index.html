@@ -56,7 +56,7 @@
         }
 
         section {
-            padding: 50px 0 400px; /* Extra margin to prevent overlap */
+            padding: 50px 0 400px;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 40px; /* Extra margin to prevent overlap */    
     }
@@ -622,35 +622,35 @@
                 right: 20px;
                 font-size: 30px;
             }
-#rates {
+#rate {
   background: #f8f9fa; /* light professional background */
   padding: 40px 20px;
 }
 
-#rates h2 {
+#rate h2 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 20px;
 }
 
-#rates h3 {
+#rate h3 {
   margin-top: 20px;
   color: #333;
 }
 
-#rates ul {
+#rate ul {
   list-style: none;
   padding: 0;
   margin: 0 0 15px 0;
 }
 
-#rates ul li {
+#rate ul li {
   margin-bottom: 8px;
   padding-left: 1em;
   position: relative;
 }
 
-#rates ul li::before {
+#rate ul li::before {
   content: "•";
   position: absolute;
   left: 0;
@@ -668,7 +668,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#amenities">Amenities</a></li>
-            <li><a href="#rates">Rates & Policies</a></li>
+            <li><a href="#rate">Rates & Policies</a></li>
             <li><a href="#book-now">Book Now</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -682,6 +682,7 @@
                 <p>Your perfect escape in a beautiful, quiet residential area. Enjoy comfort, privacy, and convenience just minutes from essential amenities and major routes.</p>
                 <a href="#about" class="btn">Learn More</a>
                 <a href="#book-now" class="btn" style="margin-left: 15px;">Check Availability</a>
+
             </div>
         </section>
         <section id="about">
@@ -714,15 +715,7 @@
                 </ul>
             </div>
         </section>
-
-<section id="rates" class="section">
-  <h2>Rates & Policies</h2>
-  <div id="rates-container">
-    <!-- JSON content will load here -->
-  </div>
-</section>
-
-                <section id="house-rules">
+        <section id="house-rules">
             <div class="container">
                 <h2>House Rules</h2>
                 <ul class="rules-list">
@@ -769,6 +762,14 @@
                 </div>
             </div>
         </section>
+
+<section id="rates" class="section">
+  <h2>Rates & Policies</h2>
+  <div id="rates-container">
+    <!-- JSON content will load here -->
+  </div>
+</section>
+
         <section id="book-now">
             <div class="container">
 
@@ -819,6 +820,7 @@
   
              <div class="date-display">Check-in:<span id="checkin-date">Not selected</span> | Check-out:<span      id="checkout-date">Not selected</span></div>
                     </div>
+
                     <div class="controls">
                         <button class="calendar-btn btn-clear" id="clear-dates">
                             <i class="fas fa-times"></i> Clear
@@ -1097,12 +1099,13 @@ function updateStatusBar() {
         });
     
     </script>
+
 <script>
   // Load Rates & Policies dynamically from JSON
-  fetch('rates.json')
+  fetch('rate.json')
     .then(response => response.json())
     .then(data => {
-      const container = document.getElementById('rates-container');
+      const container = document.getElementById('rate-container');
 
       container.innerHTML = `
         <h3>Rental Rates</h3>
@@ -1133,11 +1136,10 @@ function updateStatusBar() {
       `;
     })
     .catch(error => {
-      console.error('Error loading rates.json:', error);
-      document.getElementById('rates-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
+      console.error('Error loading rate.json:', error);
+      document.getElementById('rate-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
     });
 </script>
-
 
 </body>
 </html>
