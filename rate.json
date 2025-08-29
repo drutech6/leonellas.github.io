@@ -1,0 +1,11 @@
+{
+  "baseRate": 150,
+  "extraGuest": 25,
+  "cleaningFee": 75,
+  "deposit": "25% at booking",
+  "cancellation": [
+    "Free cancellation up to 14 days before check-in",
+    "50% refund if canceled within 7 days",
+    "No refund within 7 days"
+  ]
+}
