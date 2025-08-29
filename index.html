@@ -763,9 +763,9 @@
             </div>
         </section>
 
-<section id="rate" class="section">
+<section id="rates" class="section">
   <h2>Rates & Policies</h2>
-  <div id="rate-container">
+  <div id="rates-container">
     <!-- JSON content will load here -->
   </div>
 </section>
@@ -1137,7 +1137,7 @@ function updateStatusBar() {
     })
     .catch(error => {
       console.error('Error loading rate.json:', error);
-      document.getElementById('rate-container').innerHTML = "<p>Rates & Policies information unavailable.</p>";
+      document.getElementById('rate-container').innerHTML = "<p>Rates & Policies information unavailable locally.</p>";
     });
 </script>
 
