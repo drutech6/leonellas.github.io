@@ -6,7 +6,7 @@
     <title>Leonella's Vacation Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- Light Theme Untitled Document 2 Color Palette & General Styles --- */
+        /* --- Light Theme Color Palette & General Styles --- */
         :root {
             --primary-color: #007BFF;
             --secondary-color: #0056b3;
@@ -861,116 +861,166 @@
             navLinks.classList.toggle('active');
         });
         
-// Replace the calendar initialization section with this:
-
-// --- Calendar Logic ---
-let checkinDate = null;
-let checkoutDate = null;
-let unavailableDates = [];
-let calendarsInitialized = false;
-
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
-let checkinCurrentDate = new Date();
-let checkoutCurrentDate = new Date();
-checkoutCurrentDate.setMonth(checkoutCurrentDate.getMonth() + 1);
-
-function toYYYYMMDD(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
-function generateCalendar(type, dateToShow) {
-    try {
-        const daysContainer = document.getElementById(`${type}-days`);
-        const monthYearElement = document.getElementById(`${type}-month-year`);
+        // --- Calendar Logic ---
+        let checkinDate = null;
+        let checkoutDate = null;
         
-        if (!daysContainer || !monthYearElement) {
-            console.error(`Calendar elements not found for ${type}`);
-            return;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+        let checkinCurrentDate = new Date();
+        let checkoutCurrentDate = new Date();
+        checkoutCurrentDate.setMonth(checkoutCurrentDate.getMonth() + 1);
+
+        let unavailableDates = []; // initially empty
+
+        // Fetch unavailable dates from availability.json
+        fetch("availability.json")
+              .then(response => response.json())
+              .then(data => {
+        if (data && Array.isArray(data.unavailable)) {
+              unavailableDates = data.unavailable;
+        }
+        updateAllCalendars(); // build calendars after loading data
+  })
+        .catch(err => {
+              console.error("Failed to load availability.json:", err);
+        updateAllCalendars(); // fallback to empty
+  });
+
+
+        function toYYYYMMDD(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
-        const month = dateToShow.getMonth();
-        const year = dateToShow.getFullYear();
+        function generateCalendar(type, dateToShow) {
+            const daysContainer = document.getElementById(`${type}-days`);
+            const monthYearElement = document.getElementById(`${type}-month-year`);
+            const month = dateToShow.getMonth();
+            const year = dateToShow.getFullYear();
 
-        monthYearElement.textContent = `${dateToShow.toLocaleString('default', { month: 'long' })} ${year}`;
-        daysContainer.innerHTML = '';
+            monthYearElement.textContent = `${dateToShow.toLocaleString('default', { month: 'long' })} ${year}`;
+            daysContainer.innerHTML = '';
 
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        for (let i = 0; i < firstDay; i++) {
-            daysContainer.insertAdjacentHTML('beforeend', '<div class="day empty"></div>');
-        }
-
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day);
-            const dateStr = toYYYYMMDD(date);
-            const dayElement = document.createElement('div');
-            dayElement.classList.add('day');
-            dayElement.textContent = day;
-            dayElement.dataset.date = dateStr;
-
-            if (date < today || unavailableDates.includes(dateStr)) {
-                dayElement.classList.add('unavailable');
-            } else {
-                const checkinStr = checkinDate ? toYYYYMMDD(checkinDate) : null;
-                const checkoutStr = checkoutDate ? toYYYYMMDD(checkoutDate) : null;
-
-                if (dateStr === checkinStr || dateStr === checkoutStr) {
-                    dayElement.classList.add('selected');
-                } else if (checkinDate && checkoutDate && date > checkinDate && date < checkoutDate) {
-                    dayElement.classList.add('range');
-                }
-
-                if (toYYYYMMDD(date) === toYYYYMMDD(today) && !dayElement.classList.contains('selected')) {
-                    dayElement.classList.add('today');
-                }
+            for (let i = 0; i < firstDay; i++) {
+                daysContainer.insertAdjacentHTML('beforeend', '<div class="day empty"></div>');
             }
 
-            daysContainer.appendChild(dayElement);
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = toYYYYMMDD(date);
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+                dayElement.dataset.date = dateStr;
+
+                if (date < today || unavailableDates.includes(dateStr)) {
+                    dayElement.classList.add('unavailable');
+                } else {
+                    const checkinStr = checkinDate ? toYYYYMMDD(checkinDate) : null;
+                    const checkoutStr = checkoutDate ? toYYYYMMDD(checkoutDate) : null;
+
+                    if (dateStr === checkinStr || dateStr === checkoutStr) {
+                        dayElement.classList.add('selected');
+                    } else if (checkinDate && checkoutDate && date > checkinDate && date < checkoutDate) {
+                        dayElement.classList.add('range');
+                    }
+                    
+                    if (toYYYYMMDD(date) === toYYYYMMDD(today) && !dayElement.classList.contains('selected')) {
+                         dayElement.classList.add('today');
+                    }
+                }
+                daysContainer.appendChild(dayElement);
+            }
         }
-    } catch (error) {
-        console.error('Error generating calendar:', error);
+
+        function updateAllCalendars() {
+            generateCalendar('checkin', checkinCurrentDate);
+            generateCalendar('checkout', checkoutCurrentDate);
+        }
+
+        function handleDateClick(e) {
+            if (!e.target.matches('.day:not(.empty):not(.unavailable)')) return;
+            
+            const clickedDate = new Date(e.target.dataset.date + 'T12:00:00Z');
+
+            if (!checkinDate || (checkinDate && checkoutDate)) {
+                checkinDate = clickedDate;
+                checkoutDate = null;
+            } else if (clickedDate > checkinDate) {
+                checkoutDate = clickedDate;
+                
+                let currentDate = new Date(checkinDate);
+                currentDate.setDate(currentDate.getDate() + 1);
+                while (currentDate < checkoutDate) {
+                    if (unavailableDates.includes(toYYYYMMDD(currentDate))) {
+                        alert("Your selected range includes booked dates. Please choose a different range.");
+                        checkinDate = null;
+                        checkoutDate = null;
+                        break;
+                    }
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+            } else {
+                checkinDate = clickedDate;
+                checkoutDate = null;
+            }
+            updateAllCalendars();
+            updateStatusBar();
+        }
+
+function updateStatusBar() {
+    const checkinDisplay = document.getElementById('checkin-date');
+    const checkoutDisplay = document.getElementById('checkout-date');
+    const durationDisplay = document.getElementById('trip-duration'); // NEW
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+
+    checkinDisplay.textContent = checkinDate ? checkinDate.toLocaleDateString('en-US', options) : 'Not selected';
+    checkoutDisplay.textContent = checkoutDate ? checkoutDate.toLocaleDateString('en-US', options) : 'Not selected';
+
+    if (checkinDate && checkoutDate) {
+        const diffTime = checkoutDate - checkinDate;
+        const nights = diffTime / (1000 * 60 * 60 * 24);
+        durationDisplay.textContent = `Duration: ${nights} Night${nights > 1 ? 's' : ''}`;
+    } else {
+        durationDisplay.textContent = '';
     }
 }
 
-function updateAllCalendars() {
-    if (!calendarsInitialized) return;
-    
-    try {
-        generateCalendar('checkin', checkinCurrentDate);
-        generateCalendar('checkout', checkoutCurrentDate);
-    } catch (error) {
-        console.error('Error updating calendars:', error);
-    }
-}
+        
+        // --- Event Listeners Setup ---
+        document.getElementById('checkin-days').addEventListener('click', handleDateClick);
+        document.getElementById('checkout-days').addEventListener('click', handleDateClick);
 
-// Improved fetch with better error handling
-fetch("availability.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data && Array.isArray(data.unavailable)) {
-            unavailableDates = data.unavailable;
-        }
-    })
-    .catch(err => {
-        console.warn("Could not load availability.json, using empty unavailable dates:", err);
-        unavailableDates = [];
-    })
-    .finally(() => {
-        // Always initialize calendars, even if JSON fails
-        calendarsInitialized = true;
-        updateAllCalendars();
-    });
+        document.getElementById('prev-checkin').addEventListener('click', () => {
+            checkinCurrentDate.setMonth(checkinCurrentDate.getMonth() - 1);
+            generateCalendar('checkin', checkinCurrentDate);
+        });
+        document.getElementById('next-checkin').addEventListener('click', () => {
+            checkinCurrentDate.setMonth(checkinCurrentDate.getMonth() + 1);
+            generateCalendar('checkin', checkinCurrentDate);
+        });
+
+        document.getElementById('prev-checkout').addEventListener('click', () => {
+            checkoutCurrentDate.setMonth(checkoutCurrentDate.getMonth() - 1);
+            generateCalendar('checkout', checkoutCurrentDate);
+        });
+        document.getElementById('next-checkout').addEventListener('click', () => {
+            checkoutCurrentDate.setMonth(checkoutCurrentDate.getMonth() + 1);
+            generateCalendar('checkout', checkoutCurrentDate);
+        });
+
+        document.getElementById('clear-dates').addEventListener('click', () => {
+            checkinDate = null;
+            checkoutDate = null;
+            updateAllCalendars();
+            updateStatusBar();
+        });
 
         // MODIFIED: This now opens the Google Form
         document.getElementById('book-now-btn').addEventListener('click', () => {
@@ -989,10 +1039,11 @@ fetch("availability.json")
                 alert('Please select both a check-in and check-out date.');
             }
         });
-        // --- Initial Render ---
+// --- Initial Render ---
+  updateAllCalendars();        // draw once right away
+        
         
     });
-
         // --- Image Gallery Modal Functionality ---
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImage');
