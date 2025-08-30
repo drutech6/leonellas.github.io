@@ -2,7 +2,6 @@
   "rentalRates": {
     "baseRate": 75,
     "extraGuest": 25,
-  },
   "paymentPolicy": {
     "deposit": "25% due at booking",
     "balance": "Due 7 days before check-in",
