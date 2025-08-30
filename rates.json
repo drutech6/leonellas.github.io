@@ -9,7 +9,7 @@
   },
   "paymentPolicy": {
         "balance": "Due 7 days before check-in",
-    "acceptedPayments": "Credit Card, PayPal, Bank Transfer"
+        "acceptedPayments": "Credit Card, PayPal, Bank Transfer"
   },
   "additionalFees": {
     "cleaningFee": 75,
