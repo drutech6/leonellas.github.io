@@ -1,6 +1,7 @@
 {
   "rentalRates": {
     "baseRate": 75,
+    "baseGuests": 4,
     "extraGuestFee": 25,
     "cleaningFee": 60
   },
