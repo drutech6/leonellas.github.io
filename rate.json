@@ -1,7 +1,8 @@
 {
   "rentalRates": {
     "baseRate": 75,
-    "extraGuest": 25
+    "extraGuest": 25,
+    "cleaningFee": 60
   },
   "paymentPolicy": {
     "deposit": "50% due at booking",
