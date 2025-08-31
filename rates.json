@@ -1,12 +1,11 @@
 {
   "rentalRates": {
     "baseRate": 75,
-    "baseGuests": 4,
     "extraGuestFee": 25,
-    "cleaningFee": 60,
+    "cleaningFee": 60
   },
   "paymentPolicy": {
-    "deposit": "25% due at booking",
+    "deposit": "50% due at booking",
     "balance": "Due 7 days before check-in",
     "acceptedPayments": "Credit Card, PayPal, Bank Transfer"
   },
