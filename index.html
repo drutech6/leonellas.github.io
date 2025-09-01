@@ -1324,6 +1324,111 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- MENU TOGGLE ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('hidden');
+    });
+
+    // --- CALENDAR SETUP ---
+    let currentCheckinMonth = new Date().getMonth();
+    let currentCheckinYear = new Date().getFullYear();
+    let currentCheckoutMonth = new Date().getMonth();
+    let currentCheckoutYear = new Date().getFullYear();
+    let checkinDate = null;
+    let checkoutDate = null;
+    let ratesData = null;
+
+    // fetch the rates.json from GitHub
+    fetch("https://raw.githubusercontent.com/drutech6/drutech6.github.io/refs/heads/main/rates.json")
+      .then(res => res.json())
+      .then(data => {
+          ratesData = data.rentalRates;
+          // populate cleaning fee immediately
+          document.getElementById('cleaningFee').textContent = ratesData.cleaningFee;
+          updateCost();
+      })
+      .catch(err => console.error("Error loading rates.json:", err));
+
+    function renderCalendar(calendarElement, month, year) {
+        const monthNames = ["January","February","March","April","May","June",
+                            "July","August","September","October","November","December"];
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const header = calendarElement.querySelector('.calendar-header');
+        const daysContainer = calendarElement.querySelector('.calendar-days');
+        header.textContent = monthNames[month] + " " + year;
+        daysContainer.innerHTML = "";
+
+        for (let i = 0; i < firstDay; i++) {
+            const empty = document.createElement('div');
+            daysContainer.appendChild(empty);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.textContent = day;
+
+            dayElement.addEventListener('click', function () {
+                if (calendarElement.id === 'checkin-calendar') {
+                    checkinDate = new Date(year, month, day);
+                    document.getElementById('checkin-date').value = checkinDate.toISOString().split('T')[0];
+                    updateCost(); // <--- recalc after check-in selection
+                } else if (calendarElement.id === 'checkout-calendar') {
+                    checkoutDate = new Date(year, month, day);
+                    document.getElementById('checkout-date').value = checkoutDate.toISOString().split('T')[0];
+                    updateCost(); // <--- recalc after check-out selection
+                }
+            });
+
+            daysContainer.appendChild(dayElement);
+        }
+    }
+
+    // initial render
+    renderCalendar(document.getElementById('checkin-calendar'), currentCheckinMonth, currentCheckinYear);
+    renderCalendar(document.getElementById('checkout-calendar'), currentCheckoutMonth, currentCheckoutYear);
+
+    // --- RATE + COST CALCULATOR ---
+    function calcNights(inDate, outDate) {
+        if (!inDate || !outDate) return 0;
+        const diffTime = outDate.getTime() - inDate.getTime();
+        return diffTime > 0 ? Math.ceil(diffTime / (1000 * 60 * 60 * 24)) : 0;
+    }
+
+    function updateCost() {
+        if (!ratesData) return;
+
+        const guests = parseInt(document.getElementById('guest-count').value) || 1;
+        const nights = calcNights(checkinDate, checkoutDate);
+
+        const baseRate = ratesData.baseRate;
+        const baseGuests = ratesData.baseGuests;
+        const cleaningFee = ratesData.cleaningFee;
+
+        let extraGuestFee = 0;
+        if (guests > baseGuests) {
+            extraGuestFee = (guests - baseGuests) * ratesData.extraGuestFee;
+        }
+
+        const total = (baseRate + extraGuestFee) * nights + cleaningFee;
+
+        // update DOM
+        document.getElementById('trip-duration').textContent = nights > 0 ? `Nights: ${nights}` : '';
+        document.getElementById('baseRate').textContent = baseRate;
+        document.getElementById('extraGuestFee').textContent = extraGuestFee;
+        document.getElementById('cleaningFee').textContent = cleaningFee;
+        document.getElementById('total').textContent = total;
+    }
+
+    // hook up guest count changes
+    document.getElementById('guest-count').addEventListener('input', updateCost);
+});
+</script>
 
 </body>
 </html>
