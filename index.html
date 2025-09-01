@@ -825,18 +825,21 @@
                                 <div class="days-grid" id="checkout-days"></div>
                             </div>
                         </div>    <!-- Right side = Rates box -->
-    <div id="rate-container" style="flex:1; border:1px solid #ccc; border-radius:8px; padding:15px; max-width:300px;">
+    <div id="rate-container" style="flex:1; border:1px solid #ccc; border-radius:8px; padding:0px; max-width:300px;">
       <h3>Rates & Policies</h3>
       <div id="rates-info"></div>
 
-      <div style="margin-top:15px;">
+      <div style="margin-top:0px;">
         <label for="guest-count"><strong>Guests:</strong></label>
         <input type="number" id="guest-count" value="1" min="1" max="10" style="width:60px; margin-left:10px;">
       </div>
 
-      <div style="margin-top:15px;">
-        <p><strong>Duration:</strong> <span id="duration">0</span> nights</p>
-        <p><strong>Total:</strong> $<span id="total">0</span></p>
+      <div style="margin-top:0px;">
+       <!--  <p><strong>Duration:</strong> --> <span id="trip-duration"></span><br>  
+      <p><strong>Base Rate:</strong> $<span id="baseRate">0</span></p>
+      <p><strong>Extra Guest Fee:</strong> $<span id="extraGuestFee">0</span></p>
+      <p><strong>Cleaning Fee:</strong> $<span id="cleaningFee">0</span></p>
+      <p><strong>Total:</strong> $<span id="total">0</span></p>
       </div>                    <div class="controls">
                         
                         <button class="calendar-btn btn-book" id="book-now-btn">
@@ -1224,4 +1227,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
