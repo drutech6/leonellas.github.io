@@ -1210,76 +1210,7 @@ function updateStatusBar() {
       document.getElementById('rate-container').innerHTML = "<p>Rates & Policies information unavailable locally.</p>";
     });
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // --- your existing menu + calendar code above ---
-    
-    let checkinDate = null;
-    let checkoutDate = null;
-    let ratesData = null;
 
-    // fetch the rates.json from GitHub
-    fetch("https://raw.githubusercontent.com/drutech6/drutech6.github.io/refs/heads/main/rates.json")
-      .then(res => res.json())
-      .then(data => {
-          ratesData = data.rentalRates;
-          // populate cleaning fee immediately
-          document.getElementById('cleaningFee').textContent = ratesData.cleaningFee;
-          updateCost();
-      })
-      .catch(err => console.error("Error loading rates.json:", err));
-
-    // helper: calculate nights
-    function calcNights(inDate, outDate) {
-        if (!inDate || !outDate) return 0;
-        const diffTime = outDate.getTime() - inDate.getTime();
-        return diffTime > 0 ? Math.ceil(diffTime / (1000 * 60 * 60 * 24)) : 0;
-    }
-
-    // main updater
-    function updateCost() {
-        if (!ratesData) return;
-
-        const guests = parseInt(document.getElementById('guest-count').value) || 1;
-        const nights = calcNights(checkinDate, checkoutDate);
-
-        // base rate
-        const baseRate = ratesData.baseRate;
-        const baseGuests = ratesData.baseGuests;
-        const cleaningFee = ratesData.cleaningFee;
-
-        // extra guest fee per night if above baseGuests
-        let extraGuestFee = 0;
-        if (guests > baseGuests) {
-            extraGuestFee = (guests - baseGuests) * ratesData.extraGuestFee;
-        }
-
-        // total rent = (baseRate + extraGuestFee) * nights + cleaningFee
-        const total = (baseRate + extraGuestFee) * nights + cleaningFee;
-
-        // update DOM
-        document.getElementById('trip-duration').textContent = nights > 0 ? `Nights: ${nights}` : '';
-        document.getElementById('baseRate').textContent = baseRate;
-        document.getElementById('extraGuestFee').textContent = extraGuestFee;
-        document.getElementById('cleaningFee').textContent = cleaningFee;
-        document.getElementById('total').textContent = total;
-    }
-
-    // hook up guest count input
-    document.getElementById('guest-count').addEventListener('input', updateCost);
-
-    // Example: wherever you set checkinDate/checkoutDate in your calendar code,
-    // make sure to call updateCost() after assigning them.
-    // For example:
-    // checkinDate = new Date(selectedYear, selectedMonth, selectedDay);
-    // updateCost();
-    // checkoutDate = new Date(...);
-    // updateCost();
-
-    // If you already have handlers for setting #checkin-date and #checkout-date,
-    // just drop "updateCost();" at the end of those handlers.
-});
-</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
