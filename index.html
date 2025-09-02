@@ -1221,6 +1221,9 @@ document.addEventListener('DOMContentLoaded', function() {
   let unavailableDates = [];
   let rates = null; // {baseRate, baseGuests, extraGuestFee, cleaningFee}
 
+  const MIN_NIGHTS = 5;
+  const MAX_NIGHTS = 31;
+
   /* ---------- Helpers ---------- */
   const $ = (id) => document.getElementById(id);
   const setText = (id, value) => { const el = $(id); if (el) el.textContent = value; };
@@ -1245,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', function() {
       updateAllCalendars();
     });
 
-  /* ---------- Load rates.json (correct URL/name) ---------- */
+  /* ---------- Load rates.json ---------- */
   fetch("https://raw.githubusercontent.com/drutech6/drutech6.github.io/refs/heads/main/rates.json")
     .then(res => {
       if (!res.ok) throw new Error('rates.json fetch failed');
@@ -1254,7 +1257,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => {
       rates = data.rentalRates;
 
-      // Populate the top "Rates & Policies" section (#rate-container)
       const rc = $('rate-container');
       if (rc) {
         rc.innerHTML = `
@@ -1277,10 +1279,9 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
       }
 
-      // Seed the right-side calculator with base numbers
       setText('baseRate', rates.baseRate);
       setText('cleaningFee', rates.cleaningFee);
-      updateCost(); // in case a guest count is already set
+      updateCost();
     })
     .catch(err => {
       console.error("Failed to load rates.json:", err);
@@ -1288,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* ---------- Calendar rendering ---------- */
   function generateCalendar(type, dateToShow) {
-    const daysContainer   = $(`${type}-days`);
+    const daysContainer   = $(`${type}-days`); 
     const monthYearEl     = $(`${type}-month-year`);
     const month           = dateToShow.getMonth();
     const year            = dateToShow.getFullYear();
@@ -1348,7 +1349,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (clickedDate > checkinDate) {
       checkoutDate = clickedDate;
 
-      // Validate that the range doesn't include an unavailable date
+      // Validate unavailable dates
       let current = new Date(checkinDate);
       current.setDate(current.getDate() + 1);
       while (current < checkoutDate) {
@@ -1360,6 +1361,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         current.setDate(current.getDate() + 1);
       }
+
+      // Validate min/max stay
+      const nights = calcNights(checkinDate, checkoutDate);
+      if (nights < MIN_NIGHTS || nights > MAX_NIGHTS) {
+        alert(`Minimum stay is ${MIN_NIGHTS} nights and maximum stay is ${MAX_NIGHTS} nights.`);
+        checkoutDate = null;
+      }
+
     } else {
       checkinDate = clickedDate;
       checkoutDate = null;
@@ -1367,7 +1376,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateAllCalendars();
     updateStatusBar();
-    updateCost(); // <-- recalc totals every time dates change
+    updateCost();
   }
 
   $('checkin-days').addEventListener('click', handleDateClick);
@@ -1396,7 +1405,7 @@ document.addEventListener('DOMContentLoaded', function() {
     checkoutDate = null;
     updateAllCalendars();
     updateStatusBar();
-    updateCost(); // <-- also reset totals on clear
+    updateCost();
   });
 
   /* ---------- Status Bar ---------- */
@@ -1409,7 +1418,6 @@ document.addEventListener('DOMContentLoaded', function() {
     checkoutDisplay.textContent = checkoutDate ? checkoutDate.toLocaleDateString('en-US', options) : 'Not selected';
 
     const nights = calcNights(checkinDate, checkoutDate);
-    // There are TWO elements with id="trip-duration" in your HTML — update both:
     document.querySelectorAll('#trip-duration').forEach(el => {
       el.textContent = (nights > 0) ? `Duration: ${nights} Night${nights > 1 ? 's' : ''}` : '';
     });
@@ -1423,10 +1431,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* ---------- Cost Calculator ---------- */
   function updateCost() {
-    if (!rates) {
-      // rates not loaded yet; nothing to do
-      return;
-    }
+    if (!rates) return;
 
     const guestsInput = $('guest-count');
     const guests = Math.max(1, parseInt(guestsInput && guestsInput.value, 10) || 1);
@@ -1437,21 +1442,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const xGuestFee   = Number(rates.extraGuestFee) || 0;
     const cleaningFee = Number(rates.cleaningFee) || 0;
 
-    // Per-day extra fee for all extra guests beyond baseGuests
     const extraGuestsCount = Math.max(0, guests - baseGuests);
     const extraGuestFeePerDay = extraGuestsCount * xGuestFee;
 
-    // Display per-day figures
     setText('baseRate', baseRate.toFixed(0));
     setText('extraGuestFee', extraGuestFeePerDay.toFixed(0));
     setText('cleaningFee', cleaningFee.toFixed(0));
 
-    // Total = (baseRate + extraGuestFeePerDay) * nights + cleaningFee
     const total = nights > 0 ? (baseRate + extraGuestFeePerDay) * nights + cleaningFee : 0;
     setText('total', total.toFixed(0));
   }
 
-  // Recalculate when guest count changes
   const guestInput = $('guest-count');
   if (guestInput) {
     guestInput.addEventListener('input', updateCost);
@@ -1460,25 +1461,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* ---------- Book Now ---------- */
   $('book-now-btn').addEventListener('click', () => {
-    if (checkinDate && checkoutDate) {
-      const checkin  = toYYYYMMDD(checkinDate);
-      const checkout = toYYYYMMDD(checkoutDate);
-      const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?usp=pp_url";
-      const url = `${GOOGLE_FORM_URL}&entry.120129823=${encodeURIComponent(checkin)}&entry.78700285=${encodeURIComponent(checkout)}`;
-      window.open(url, '_blank');
-    } else {
+    const nights = calcNights(checkinDate, checkoutDate);
+    if (!checkinDate || !checkoutDate) {
       alert('Please select both a check-in and check-out date.');
+      return;
     }
+    if (nights < MIN_NIGHTS || nights > MAX_NIGHTS) {
+      alert(`Booking must be between ${MIN_NIGHTS} and ${MAX_NIGHTS} nights.`);
+      return;
+    }
+
+    const checkin  = toYYYYMMDD(checkinDate);
+    const checkout = toYYYYMMDD(checkoutDate);
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?usp=pp_url";
+    const url = `${GOOGLE_FORM_URL}&entry.120129823=${encodeURIComponent(checkin)}&entry.78700285=${encodeURIComponent(checkout)}`;
+    window.open(url, '_blank');
   });
 
   /* ---------- Initial render ---------- */
   updateAllCalendars();
   updateStatusBar();
-  // updateCost() will run after rates load; calling here is harmless
   updateCost();
 });
 </script>
 
+
 </body>
 </html>
+
 
