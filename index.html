@@ -412,6 +412,7 @@
             background: var(--bg-alt);
             padding: 1px 0px;
             border-radius: 8px;
+            width: 71%;
             margin-top: 1px;
             display: flex;
             justify-content: space-between;
@@ -563,6 +564,10 @@
         }
 
         /* --- House Rules Styling --- */
+        #amenities {
+            padding-top: 0px;  /* reduce this */
+            margin-top: 0;      /* ensure no extra margin */
+        }
         #house-rules {
             padding-top: 0px;  /* reduce this */
             margin-top: 0;      /* ensure no extra margin */
@@ -641,6 +646,20 @@
                 right: 20px;
                 font-size: 30px;
             }
+.rates-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* centers everything horizontally */
+  justify-content: center;
+  text-align: center;    /* centers text */
+  padding: 20px;
+}
+
+.rates-container button {
+  margin-top: 15px;
+  align-self: left;    /* keeps button centered */
+}
+
 #rate {
   background: #f8f9fa; /* light professional background */
   padding: 40px 20px;
@@ -896,9 +915,9 @@
 
                     <div class="status-bar">
                         <div><b>Your Selection:</b></div>
-                <span id="trip-duration"></span><br>   <!-- NEW LINE to count trip duration (nights)-->
+                <span id="trip-duration"></span><br>   <!-- NEW LINE to count trip duration-->
   
-                  <div class="date-display">.   |  Check-in:<span id="checkin-date">Not selected</span>  |  Check-out:<span      id="checkout-date">Not selected</span></div>
+                  <div class="date-display">  |  Check-in:<span id="checkin-date">Not selected</span>  |  Check-out:<span      id="checkout-date">Not selected</span></div>
                     </div>
 
                     <div class="controls">
