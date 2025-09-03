@@ -1219,9 +1219,9 @@ document.addEventListener('DOMContentLoaded', function() {
   checkoutCurrentDate.setMonth(checkoutCurrentDate.getMonth() + 1);
 
   let unavailableDates = [];
-  let rates = null; // {baseRate, baseGuests, extraGuestFee, cleaningFee}
+  let rates = null;
 
-  const MIN_NIGHTS = 5;
+  const MIN_NIGHTS = 4;
   const MAX_NIGHTS = 31;
 
   /* ---------- Helpers ---------- */
@@ -1312,7 +1312,20 @@ document.addEventListener('DOMContentLoaded', function() {
       el.textContent = day;
       el.dataset.date = dateStr;
 
-      if (date < today || unavailableDates.includes(dateStr)) {
+      let isUnavailable = (date < today || unavailableDates.includes(dateStr));
+
+      // If rendering checkout calendar and checkinDate is chosen → enforce 4–31 day window
+      if (type === 'checkout' && checkinDate) {
+        const nights = calcNights(checkinDate, date);
+        if (nights < MIN_NIGHTS || nights > MAX_NIGHTS) {
+          isUnavailable = true;
+        }
+        if (date <= checkinDate) {
+          isUnavailable = true; // prevent checkout before checkin
+        }
+      }
+
+      if (isUnavailable) {
         el.classList.add('unavailable');
       } else {
         const checkinStr  = checkinDate  ? toYYYYMMDD(checkinDate)  : null;
@@ -1486,7 +1499,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
+
 </body>
 </html>
-
 
