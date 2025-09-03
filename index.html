@@ -1127,8 +1127,8 @@ function updateStatusBar() {
                 const checkout = toYYYYMMDD(checkoutDate);
 
                 // Construct the Google Form URL
-                const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?usp=pp_url";
-                const url = `${GOOGLE_FORM_URL}&entry.120129823=${encodeURIComponent(checkin)}&entry.78700285=${encodeURIComponent(checkout)}`;
+                const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/Jv_Rant8J0A/viewform?usp=pp_url";
+                const url = `${GOOGLE_FORM_URL}&entry.12=${encodeURIComponent(checkin)}&entry.7=${encodeURIComponent(checkout)}`;
 
                 // Open the pre-filled form in a new tab
                 window.open(url, '_blank');
@@ -1486,8 +1486,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const checkin  = toYYYYMMDD(checkinDate);
     const checkout = toYYYYMMDD(checkoutDate);
-    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf6nNdYKHmswjkq1ZhmzYnetAwMsqPYi0Esp76Jv_Rant8J0A/viewform?usp=pp_url";
-    const url = `${GOOGLE_FORM_URL}&entry.120129823=${encodeURIComponent(checkin)}&entry.78700285=${encodeURIComponent(checkout)}`;
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FA_url";
+    const url = `${GOOGLE_FORM_URL}&entry.12=${encodeURIComponent(checkin)}&entry.7=${encodeURIComponent(checkout)}`;
     window.open(url, '_blank');
   });
 
@@ -1497,7 +1497,6 @@ document.addEventListener('DOMContentLoaded', function() {
   updateCost();
 });
 </script>
-
 
 
 </body>
