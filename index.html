@@ -1112,12 +1112,16 @@ function updateStatusBar() {
             generateCalendar('checkout', checkoutCurrentDate);
         });
 
-        document.getElementById('clear-dates').addEventListener('click', () => {
-            checkinDate = null;
-            checkoutDate = null;
-            updateAllCalendars();
-            updateStatusBar();
-        });
+document.getElementById('clear-dates').addEventListener('click', () => {
+  checkinDate = null;
+  checkoutDate = null;
+  updateAllCalendars();
+  updateStatusBar();
+  if (typeof updateCost === 'function') {   // NEW
+    updateCost();                           // NEW → zero totals
+  }                                         // NEW
+});
+
 
         // MODIFIED: This now opens the Google Form
         document.getElementById('book-now-btn').addEventListener('click', () => {
@@ -1288,62 +1292,72 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
   /* ---------- Calendar rendering ---------- */
-  function generateCalendar(type, dateToShow) {
-    const daysContainer   = $(`${type}-days`); 
-    const monthYearEl     = $(`${type}-month-year`);
-    const month           = dateToShow.getMonth();
-    const year            = dateToShow.getFullYear();
+function generateCalendar(type, dateToShow) {
+    const daysContainer = document.getElementById(`${type}-days`);
+    const monthYearElement = document.getElementById(`${type}-month-year`);
+    const month = dateToShow.getMonth();
+    const year = dateToShow.getFullYear();
 
-    monthYearEl.textContent = `${dateToShow.toLocaleString('default', { month: 'long' })} ${year}`;
+    monthYearElement.textContent = `${dateToShow.toLocaleString('default', { month: 'long' })} ${year}`;
     daysContainer.innerHTML = '';
 
-    const firstDay     = new Date(year, month, 1).getDay();
-    const daysInMonth  = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Compute valid checkout window if a check-in exists
+    let minCheckout = null;
+    let maxCheckout = null;
+    if (checkinDate) {
+        minCheckout = new Date(checkinDate);
+        minCheckout.setDate(minCheckout.getDate() + 4);
+
+        maxCheckout = new Date(checkinDate);
+        maxCheckout.setDate(maxCheckout.getDate() + 13);
+    }
 
     for (let i = 0; i < firstDay; i++) {
-      daysContainer.insertAdjacentHTML('beforeend', '<div class="day empty"></div>');
+        daysContainer.insertAdjacentHTML('beforeend', '<div class="day empty"></div>');
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(year, month, day);
-      const dateStr = toYYYYMMDD(date);
-      const el = document.createElement('div');
-      el.classList.add('day');
-      el.textContent = day;
-      el.dataset.date = dateStr;
+        const date = new Date(year, month, day);
+        const dateStr = toYYYYMMDD(date);
+        const dayElement = document.createElement('div');
+        dayElement.classList.add('day');
+        dayElement.textContent = day;
+        dayElement.dataset.date = dateStr;
 
-      let isUnavailable = (date < today || unavailableDates.includes(dateStr));
+        if (date < today || unavailableDates.includes(dateStr)) {
+            dayElement.classList.add('unavailable');
+        } else {
+            const checkinStr = checkinDate ? toYYYYMMDD(checkinDate) : null;
+            const checkoutStr = checkoutDate ? toYYYYMMDD(checkoutDate) : null;
 
-      // If rendering checkout calendar and checkinDate is chosen → enforce 4–31 day window
-      if (type === 'checkout' && checkinDate) {
-        const nights = calcNights(checkinDate, date);
-        if (nights < MIN_NIGHTS || nights > MAX_NIGHTS) {
-          isUnavailable = true;
+            // ✅ Gray-out logic
+            if (type === "checkout" && checkinDate) {
+                if (date <= checkinDate || date < minCheckout || date > maxCheckout) {
+                    dayElement.classList.add("unavailable");
+                }
+            }
+            if (type === "checkin" && checkinDate) {
+                if (date > checkinDate && (date < minCheckout || date > maxCheckout)) {
+                    dayElement.classList.add("unavailable");
+                }
+            }
+
+            if (dateStr === checkinStr || dateStr === checkoutStr) {
+                dayElement.classList.add('selected');
+            } else if (checkinDate && checkoutDate && date > checkinDate && date < checkoutDate) {
+                dayElement.classList.add('range');
+            }
+
+            if (toYYYYMMDD(date) === toYYYYMMDD(today) && !dayElement.classList.contains('selected')) {
+                dayElement.classList.add('today');
+            }
         }
-        if (date <= checkinDate) {
-          isUnavailable = true; // prevent checkout before checkin
-        }
-      }
-
-      if (isUnavailable) {
-        el.classList.add('unavailable');
-      } else {
-        const checkinStr  = checkinDate  ? toYYYYMMDD(checkinDate)  : null;
-        const checkoutStr = checkoutDate ? toYYYYMMDD(checkoutDate) : null;
-
-        if (dateStr === checkinStr || dateStr === checkoutStr) {
-          el.classList.add('selected');
-        } else if (checkinDate && checkoutDate && date > checkinDate && date < checkoutDate) {
-          el.classList.add('range');
-        }
-        if (toYYYYMMDD(date) === toYYYYMMDD(today) && !el.classList.contains('selected')) {
-          el.classList.add('today');
-        }
-      }
-
-      daysContainer.appendChild(el);
+        daysContainer.appendChild(dayElement);
     }
-  }
+}
 
   function updateAllCalendars() {
     generateCalendar('checkin',  checkinCurrentDate);
@@ -1351,46 +1365,52 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /* ---------- Date selection ---------- */
-  function handleDateClick(e) {
+function handleDateClick(e) {
     if (!e.target.matches('.day:not(.empty):not(.unavailable)')) return;
-
+            
     const clickedDate = new Date(e.target.dataset.date + 'T12:00:00Z');
 
     if (!checkinDate || (checkinDate && checkoutDate)) {
-      checkinDate = clickedDate;
-      checkoutDate = null;
-    } else if (clickedDate > checkinDate) {
-      checkoutDate = clickedDate;
-
-      // Validate unavailable dates
-      let current = new Date(checkinDate);
-      current.setDate(current.getDate() + 1);
-      while (current < checkoutDate) {
-        if (unavailableDates.includes(toYYYYMMDD(current))) {
-          alert("Your selected range includes booked dates. Please choose a different range.");
-          checkinDate = null;
-          checkoutDate = null;
-          break;
-        }
-        current.setDate(current.getDate() + 1);
-      }
-
-      // Validate min/max stay
-      const nights = calcNights(checkinDate, checkoutDate);
-      if (nights < MIN_NIGHTS || nights > MAX_NIGHTS) {
-        alert(`Minimum stay is ${MIN_NIGHTS} nights and maximum stay is ${MAX_NIGHTS} nights.`);
+        checkinDate = clickedDate;
         checkoutDate = null;
-      }
 
+        // 👇 NEW: enforce 3–7 day rule right after selecting check-in
+        onCheckinSelected(checkinDate);
+    if (typeof updateCost === 'function') {   // NEW
+      updateCost();                           // NEW → reset totals (nights = 0)
+    }                                         // NEW
+    } else if (clickedDate > checkinDate) {
+        checkoutDate = clickedDate;
+                
+        let currentDate = new Date(checkinDate);
+        currentDate.setDate(currentDate.getDate() + 1);
+        while (currentDate < checkoutDate) {
+            if (unavailableDates.includes(toYYYYMMDD(currentDate))) {
+                alert("Your selected range includes booked dates. Please choose a different range.");
+                checkinDate = null;
+                checkoutDate = null;
+                break;
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+    if (typeof updateCost === 'function') {   // NEW
+      updateCost();                           // NEW → compute totals now that nights > 0
+    }                                         // NEW
     } else {
-      checkinDate = clickedDate;
-      checkoutDate = null;
+        checkinDate = clickedDate;
+        checkoutDate = null;
+
+        // 👇 NEW: also enforce when user resets check-in
+        onCheckinSelected(checkinDate);
+    if (typeof updateCost === 'function') {   // NEW
+      updateCost();                           // NEW
+    }                                         // NEW
     }
 
     updateAllCalendars();
     updateStatusBar();
-    updateCost();
-  }
+
+}
 
   $('checkin-days').addEventListener('click', handleDateClick);
   $('checkout-days').addEventListener('click', handleDateClick);
@@ -1420,6 +1440,29 @@ document.addEventListener('DOMContentLoaded', function() {
     updateStatusBar();
     updateCost();
   });
+function onCheckinSelected(date) {
+  const minCheckout = new Date(date);  minCheckout.setDate(minCheckout.getDate() + 4);
+  const maxCheckout = new Date(date);  maxCheckout.setDate(maxCheckout.getDate() + 13);
+
+  // Grey out invalid checkout dates
+  document.querySelectorAll('#checkout-days .day').forEach(dayEl => {
+    const dayDate = new Date(dayEl.dataset.date);
+    const invalid = (dayDate <= date) || (dayDate < minCheckout) || (dayDate > maxCheckout);
+    dayEl.classList.toggle("unavailable", invalid);
+    dayEl.style.pointerEvents = invalid ? "none" : "auto";
+    dayEl.style.opacity = invalid ? "0.4" : "1";
+  });
+
+  // Auto-jump checkout calendar to first valid month/day
+  checkoutCurrentDate = new Date(minCheckout);
+  generateCalendar('checkout', checkoutCurrentDate);
+
+  // NEW: keep totals panel consistent
+  if (typeof updateCost === 'function') {
+    updateCost();
+  }
+}
+
 
   /* ---------- Status Bar ---------- */
   function updateStatusBar() {
@@ -1478,6 +1521,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!checkinDate || !checkoutDate) {
       alert('Please select both a check-in and check-out date.');
       return;
+
     }
     if (nights < MIN_NIGHTS || nights > MAX_NIGHTS) {
       alert(`Booking must be between ${MIN_NIGHTS} and ${MAX_NIGHTS} nights.`);
